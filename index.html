@@ -154,16 +154,19 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--san
 .ah-loc{font-family:var(--mono);font-size:11px;color:var(--tx3);background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:2px 7px;}
 .hd-clock{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--acc);letter-spacing:.04em;}
 .btn-cfg{background:var(--s2);border:1px solid var(--b2);border-radius:6px;color:var(--tx2);font-size:12px;padding:5px 11px;cursor:pointer;font-family:var(--sans);}
-/* 2행: 예약·경과·남은·예상소요 */
-.ah-row2{display:flex;align-items:center;gap:0;margin-top:5px;background:var(--s2);border-radius:8px;overflow:hidden;}
-.ah-stat{flex:1;display:flex;flex-direction:column;align-items:center;padding:5px 4px;}
+/* 2행: 통합 상태 바 */
+.ah-row2{display:flex;align-items:stretch;gap:0;margin-top:6px;background:var(--s2);border-radius:9px;overflow:hidden;border:1px solid var(--b1);}
+.ah-stat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;}
 .ah-stat+.ah-stat{border-left:1px solid var(--b1);}
 .ah-stat-lbl{font-size:9px;color:var(--tx3);font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px;}
-.ah-stat-val{font-size:14px;font-weight:700;font-family:var(--mono);color:var(--tx);}
+.ah-stat-val{font-size:15px;font-weight:700;font-family:var(--mono);color:var(--tx);}
 .ah-stat-val.ac{color:var(--acc);}
 .ah-stat-val.ok{color:var(--grn);}
 .ah-stat-val.tight{color:var(--ora);}
 .ah-stat-val.over{color:var(--red);}
+.ah-stat.proj-col{background:var(--acc3);}
+.ah-stat.proj-col .ah-stat-lbl{color:rgba(58,125,0,.7);}
+.ah-stat.proj-col .ah-stat-val{color:var(--acc);}
 /* 일시정지 상태 */
 .paused-banner{display:none;background:var(--ora);color:#fff;text-align:center;font-size:12px;font-weight:700;padding:4px;font-family:var(--sans);flex-shrink:0;}
 .paused-banner.on{display:block;}
@@ -173,17 +176,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--san
 .app-tab{flex:1;height:38px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--tx3);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;gap:5px;}
 .app-tab.on{color:var(--acc);border-bottom-color:var(--acc);}
 
-/* booking bar */
-.bbar{background:var(--s1);border-bottom:1px solid var(--b2);padding:7px 16px;flex-shrink:0;display:none;align-items:center;justify-content:space-between;gap:16px;}
-.bbar.on{display:flex;}
-.bbar-title{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.06em;}
-.bbar-slots{font-size:13px;font-family:var(--mono);color:var(--tx2);}
-.bbar-slots .sep{color:var(--tx3);margin:0 4px;}
-.bbar-proj-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.06em;}
-.bbar-proj-val{font-size:17px;font-weight:700;font-family:var(--mono);}
-.col-ok{color:var(--grn);}
-.col-tight{color:var(--ora);}
-.col-over{color:var(--red);}
+/* bbar removed - merged into header */
 
 /* progress */
 .pb{background:var(--s1);border-bottom:1px solid var(--b1);padding:7px 16px 9px;flex-shrink:0;}
@@ -301,13 +294,26 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--san
 .btn-done-s{flex:5;height:56px;background:var(--accbtn);color:#fff;border:none;border-radius:12px;font-family:var(--sans);font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(90,184,0,.3);}
 .btn-done-s:active{opacity:.85;transform:scale(.98);}
 
-/* bottom strip */
-.bot{background:var(--s1);border-top:1px solid var(--b2);padding:8px 16px 14px;flex-shrink:0;display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 -1px 4px rgba(0,0,0,.06);}
-.bi{display:flex;flex-direction:column;align-items:center;}
-.bi-l{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.06em;margin-bottom:3px;}
-.bi-v{font-size:15px;font-weight:700;font-family:var(--mono);color:var(--tx);}
-.bi-v.ac{color:var(--acc);}
-.bdiv{width:1px;background:var(--b1);margin:2px 4px;}
+/* bottom strip - redesigned */
+.bot{background:var(--s1);border-top:1px solid var(--b2);padding:9px 16px 16px;flex-shrink:0;display:flex;flex-direction:column;gap:4px;box-shadow:0 -1px 4px rgba(0,0,0,.06);}
+.bot-row1{display:flex;align-items:center;justify-content:space-between;}
+.bot-now{display:flex;align-items:baseline;gap:6px;}
+.bot-now-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);}
+.bot-now-val{font-size:18px;font-weight:700;font-family:var(--mono);color:var(--acc);}
+.bot-done{font-size:13px;font-family:var(--mono);color:var(--tx3);}
+.bot-done strong{color:var(--tx);font-weight:700;}
+.bot-row2{display:flex;align-items:center;gap:0;background:var(--s2);border-radius:7px;overflow:hidden;}
+.bot-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:5px 4px;}
+.bot-item+.bot-item{border-left:1px solid var(--b1);}
+.bot-item-lbl{font-size:9px;color:var(--tx3);font-family:var(--mono);letter-spacing:.04em;margin-bottom:2px;}
+.bot-item-val{font-size:13px;font-weight:700;font-family:var(--mono);color:var(--tx2);}
+.bot-item-val.hi{color:var(--tx);}
+.bot-item-val.ok{color:var(--grn);}
+.bot-item-val.tight{color:var(--ora);}
+.bot-item-val.over{color:var(--red);}
+.bot-item.proj{background:var(--acc3);}
+.bot-item.proj .bot-item-lbl{color:rgba(58,125,0,.7);}
+.bot-item.proj .bot-item-val{color:var(--acc);font-size:14px;}
 
 /* info panel */
 #info-panel,.dil-main-panel{display:none;flex:1;overflow-y:auto;padding:14px 16px 20px;flex-direction:column;gap:16px;}
@@ -630,6 +636,10 @@ svg{display:block;}
         <div class="ah-stat-lbl">예상 소요</div>
         <div class="ah-stat-val" id="ah-total-est">—</div>
       </div>
+      <div class="ah-stat proj-col">
+        <div class="ah-stat-lbl">예상 종료</div>
+        <div class="ah-stat-val" id="ah-proj">—</div>
+      </div>
     </div>
   </div>
   <div class="paused-banner" id="paused-banner">⏸ 일시정지 중 — 재개하려면 ▶ 버튼을 누르세요</div>
@@ -641,24 +651,33 @@ svg{display:block;}
   </div>
 
   <!-- 진행 뷰 -->
-  <div id="prog-view" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
-    <div class="bbar" id="bbar">
-      <div><div class="bbar-title">예약 현황</div><div class="bbar-slots" id="bslots">—</div></div>
-      <div style="text-align:right;"><div class="bbar-proj-lbl">예상 종료</div><div class="bbar-proj-val" id="bproj">—</div></div>
-    </div>
-    <div class="pb">
+  <div id="prog-view" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">    <div class="pb">
       <div class="pb-meta"><span id="pblbl">0 / 0 단계 완료</span><span class="pct" id="pbpct">0%</span></div>
       <div class="bar-t"><div class="bar-f" id="barf"></div></div>
     </div>
     <div class="app-panel" id="scroll" style="display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content;gap:8px;align-content:start;"></div>
     <div class="bot">
-      <div class="bi"><div class="bi-l">현재시각</div><div class="bi-v ac" id="bsnow">—</div></div>
-      <div class="bdiv"></div>
-      <div class="bi"><div class="bi-l">완료</div><div class="bi-v" id="bsdone">0/0</div></div>
-      <div class="bdiv"></div>
-      <div class="bi"><div class="bi-l">이 단계</div><div class="bi-v" id="bsel">—</div></div>
-      <div class="bdiv"></div>
-      <div class="bi"><div class="bi-l">예상 종료</div><div class="bi-v" id="bsproj">—</div></div>
+      <div class="bot-row1">
+        <div class="bot-now">
+          <div class="bot-now-lbl">현재</div>
+          <div class="bot-now-val" id="bsnow">—</div>
+        </div>
+        <div class="bot-done"><strong id="bsdone-main">0/0</strong> 단계 완료</div>
+      </div>
+      <div class="bot-row2">
+        <div class="bot-item">
+          <div class="bot-item-lbl">이 단계</div>
+          <div class="bot-item-val hi" id="bsel">—</div>
+        </div>
+        <div class="bot-item">
+          <div class="bot-item-lbl">남은 단계</div>
+          <div class="bot-item-val" id="bsrem">—</div>
+        </div>
+        <div class="bot-item proj">
+          <div class="bot-item-lbl">예상 종료</div>
+          <div class="bot-item-val" id="bsproj">—</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1443,7 +1462,10 @@ function restoreState(){
     syncToggles();
     activeSteps=buildSteps();
     cur=s.cur||0;results=s.results||{};
-    sessStart=new Date(s.sessStart);stepStart=new Date(s.stepStart);stepSec=s.stepSec||0;isPaused=false;totalPaused=0;
+    sessStart=new Date(s.sessStart);stepStart=new Date(s.stepStart);
+    /* 복원 시 실제 경과 초로 재계산 (저장된 값이 아닌 실시간 기준) */
+    stepSec=Math.floor((new Date()-stepStart)/1000);
+    isPaused=false;totalPaused=0;
     return true;
   }catch(e){clearState();return false;}
 }
@@ -1457,7 +1479,6 @@ function startApp(){
   document.getElementById('setup').style.display='none';
   document.getElementById('app').style.display='flex';
   document.getElementById('ah-row2').style.display='flex';
-  if(bookMin>0)document.getElementById('bbar').classList.add('on');
   renderSteps();updateProg();
   startStepTimer();
   reqWakeLock();
@@ -1475,6 +1496,7 @@ function goSetup(){
 
 function startStepTimer(){
   clearInterval(stepIv);stepSec=0;totalPaused=0;
+  stepStart=new Date();
   stepIv=setInterval(function(){
     if(isPaused) return;
     stepSec++;
@@ -1507,36 +1529,46 @@ function togglePause(){
 function tickGlobal(){
   if(isPaused) return;
   var now=new Date();
-  var elSec=Math.floor((now-sessStart)/1000)-Math.floor(totalPaused/1000);
+  /* 경과 시간: 일시정지 누적 제외 */
+  var pausedMs=totalPaused+(isPaused&&pauseStart?(now-pauseStart):0);
+  var elSec=Math.max(0,Math.floor((now-sessStart-pausedMs)/1000));
   document.getElementById('hdclock').textContent=toHHMM(now);
   document.getElementById('bsnow').textContent=toHHMM(now);
 
-  /* 하단: 이 단계 경과 */
-  var stepEl=Math.floor((now-stepStart)/1000)-Math.floor(totalPaused/1000);
+  /* 이 단계 경과 — stepStart 기준으로 직접 계산 (stepSec와 동기화) */
+  var stepElSec=Math.max(0,Math.floor((now-stepStart-pausedMs)/1000));
   var curStep=activeSteps[cur];
   if(curStep){
-    var stepEst=curStep.est;
-    var stepElMin=Math.round(stepEl/60);
-    var stepDiff=stepElMin-stepEst;
-    var stepTxt=toMMSS(Math.max(0,stepEl))+(stepDiff>0?' (+'+stepDiff+'분)':stepDiff<0?' ('+stepDiff+'분)':'');
+    var stepElMin=Math.round(stepElSec/60);
+    var stepDiff=stepElMin-curStep.est;
+    var stepTxt=toMMSS(stepElSec)+(stepDiff>0?' (+'+stepDiff+'분)':stepDiff<0?' ('+stepDiff+'분)':'');
     document.getElementById('bsel').textContent=stepTxt;
+    /* 카드 타이머도 동기화 */
+    var tmrEl=document.getElementById('active-tmr');
+    if(tmrEl) tmrEl.textContent=toMMSS(stepElSec);
+    stepSec=stepElSec;
   }
 
   /* 남은 시간 */
   var doneCnt=Object.keys(results).length;
+  var remSteps=activeSteps.length-doneCnt;
   var remMin=activeSteps.slice(doneCnt).reduce(function(a,s){return a+s.est;},0);
   var projDate=new Date(now.getTime()+remMin*60000);
   var projStr=toHHMM(projDate);
   document.getElementById('bsproj').textContent=projStr;
+  var bsremEl=document.getElementById('bsrem');
+  if(bsremEl) bsremEl.textContent=remSteps+'단계 · '+toHM(remMin);
 
   /* 총 예상 소요 */
   var totalEst=sumEst(activeSteps);
 
-  /* 헤더 2행 업데이트 */
+  /* 헤더 통합 바 */
   document.getElementById('ah-elapsed').textContent=toMMSS(elSec);
   var remSec=Math.max(0,remMin*60);
   document.getElementById('ah-remain').textContent=toHM(Math.round(remSec/60));
   document.getElementById('ah-total-est').textContent=toHM(totalEst);
+  var ahProjEl=document.getElementById('ah-proj');
+  if(ahProjEl) ahProjEl.textContent=projStr;
 
   var bookEl=document.getElementById('ah-book');
   if(bookMin>0){
@@ -1544,12 +1576,8 @@ function tickGlobal(){
     var projMin=Math.round((projDate-sessStart)/60000);
     var cls=projMin<=bookMin?'ok':(projMin<=bookMin+15?'tight':'over');
     document.getElementById('ah-remain').className='ah-stat-val '+cls;
-    /* bbar */
-    var usedMin=Math.round(elSec/60);
-    var remBook=bookMin-usedMin;
-    document.getElementById('bslots').innerHTML='예약 '+toHM(bookMin)+'<span class="sep">·</span>경과 '+toHM(usedMin)+'<span class="sep">·</span>잔여 <span class="'+cls+'">'+(remBook>=0?'+':'')+toHM(Math.abs(remBook))+'</span>';
-    var pe=document.getElementById('bproj');pe.textContent=projStr;pe.className='bbar-proj-val '+cls;
-    document.getElementById('bsproj').className='bi-v '+cls;
+    if(ahProjEl) ahProjEl.className='ah-stat-val '+cls;
+    document.getElementById('bsproj').className='bot-item-val '+cls;
   } else {
     bookEl.textContent='미설정';
   }
@@ -1595,7 +1623,8 @@ function updateProg(){
   document.getElementById('barf').style.width=pct+'%';
   document.getElementById('pblbl').textContent=done+' / '+tot+' 단계 완료';
   document.getElementById('pbpct').textContent=pct+'%';
-  document.getElementById('bsdone').textContent=done+'/'+tot;
+  var bsdoneEl=document.getElementById('bsdone-main');
+  if(bsdoneEl) bsdoneEl.textContent=done+'/'+tot;
 }
 
 function makeEl(tag,cls,html){var el=document.createElement(tag);if(cls)el.className=cls;if(html!==undefined)el.innerHTML=html;return el;}
@@ -1914,10 +1943,15 @@ renderDilGrid('dil-setup-grid',true);
   if(restoreState()){
     document.getElementById('setup').style.display='none';
     document.getElementById('app').style.display='flex';
-    if(bookMin>0)document.getElementById('bbar').classList.add('on');
     renderSteps();updateProg();
+    /* stepSec는 restoreState()에서 이미 stepStart 기준으로 재계산됨 */
     clearInterval(stepIv);
-    stepIv=setInterval(function(){stepSec++;var el=document.getElementById('active-tmr');if(el)el.textContent=toMMSS(stepSec);},1000);
+    stepIv=setInterval(function(){
+      if(isPaused)return;
+      stepSec++;
+      var el=document.getElementById('active-tmr');
+      if(el)el.textContent=toMMSS(stepSec);
+    },1000);
     reqWakeLock();
     globalIv=setInterval(function(){tickGlobal();saveState();},1000);tickGlobal();
     scrollToCur();
