@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>워시존 김포IC · 디테일링</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ════ 화이트 테마 ════ */
+:root{
+  --bg:#f5f5f3;--s1:#ffffff;--s2:#f0f0ee;--s3:#e8e8e6;--s4:#d8d8d4;
+  --b1:rgba(0,0,0,.08);--b2:rgba(0,0,0,.13);--b3:rgba(0,0,0,.22);
+  --tx:#1a1a18;--tx2:#555550;--tx3:#909088;
+  --acc:#3a7d00;--acc2:rgba(58,125,0,.12);--acc3:rgba(58,125,0,.06);
+  --accbtn:#5ab800;
+  --blue:#0070c0;--blue2:rgba(0,112,192,.1);
+  --ora:#c06000;--grn:#007050;--red:#c03000;--red2:rgba(192,48,0,.1);
+  --r:10px;--rl:14px;
+  --mono:'DM Mono',monospace;--sans:'Noto Sans KR',sans-serif;
+  --shadow:0 1px 4px rgba(0,0,0,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--sans);overscroll-behavior:none;}
+
+/* ════ SETUP TABS ════ */
+#setup{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;}
+.setup-header{padding:18px 20px 0;flex-shrink:0;}
+.setup-header h1{font-size:21px;font-weight:700;letter-spacing:-.02em;margin-bottom:2px;}
+.setup-header p{font-size:12px;color:var(--tx3);font-family:var(--mono);}
+
+/* 설정 탭 바 */
+.setup-tabs{display:flex;background:var(--s1);border-bottom:1.5px solid var(--b2);margin-top:12px;flex-shrink:0;}
+.setup-tab{flex:1;height:40px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--tx3);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;gap:5px;}
+.setup-tab.on{color:var(--acc);border-bottom-color:var(--acc);}
+
+.setup-pane{display:none;flex:1;overflow-y:auto;padding:16px 20px 130px;}
+.setup-pane.on{display:block;}
+
+.sec-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--tx3);text-transform:uppercase;font-family:var(--mono);margin-bottom:10px;}
+
+/* ─── 프리셋 그리드 3열 ─── */
+.preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+@media(min-width:900px){.preset-grid{grid-template-columns:repeat(3,1fr);}}
+.pc{background:var(--s1);border:1.5px solid var(--b2);border-radius:var(--rl);padding:13px 12px 11px;cursor:pointer;transition:all .15s;position:relative;box-shadow:var(--shadow);}
+.pc.sel{border-color:var(--acc);background:var(--acc2);}
+.pc.custom-slot{border-style:dashed;}
+.pc-icon{font-size:18px;line-height:1;flex-shrink:0;}
+.pc-name{font-size:13px;font-weight:700;color:var(--tx);}
+.pc.sel .pc-name{color:var(--acc);}
+.pc-time{font-size:11px;color:var(--blue);font-family:var(--mono);margin-bottom:3px;}
+.pc-flow{font-size:11px;color:var(--tx2);line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.pc-rec{font-size:11px;color:var(--ora);font-family:var(--mono);margin-top:4px;}
+.pc-skip{font-size:10px;color:var(--tx3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pc-edit-btn{display:inline-block;margin-top:5px;font-size:10px;color:var(--tx3);background:var(--s3);border:1px solid var(--b2);border-radius:4px;padding:2px 7px;cursor:pointer;}
+.pc-top-row{display:flex;align-items:center;gap:5px;margin-bottom:4px;}
+.pc-top-row .pc-icon{font-size:17px;}
+.pc-top-row .pc-name{flex:1;font-size:13px;font-weight:700;min-width:0;}
+.pc-order-btns{position:absolute;bottom:8px;right:8px;display:flex;gap:3px;}
+.pc-ob{width:20px;height:20px;background:var(--s3);border:1px solid var(--b2);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--tx3);}
+.pc-ob:active{background:var(--s4);}
+.pc-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--acc);display:none;align-items:center;justify-content:center;flex-shrink:0;z-index:1;}
+.pc.sel .pc-check{display:flex;}
+
+/* 세부옵션 + 마감 반반 */
+.opts-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;}
+.tog-list{display:flex;flex-direction:column;gap:6px;}
+.tr{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:11px 14px;box-shadow:var(--shadow);}
+.tr-l{flex:1;min-width:0;}
+.tr-name{font-size:14px;font-weight:500;color:var(--tx);}
+.tr-sub{font-size:11px;color:var(--tx3);font-family:var(--mono);margin-top:2px;}
+.sw{position:relative;width:44px;height:24px;flex-shrink:0;}
+.sw input{opacity:0;width:0;height:0;position:absolute;}
+.sw-t{position:absolute;inset:0;border-radius:12px;background:var(--s4);border:1px solid var(--b2);transition:background .2s;cursor:pointer;}
+.sw input:checked+.sw-t{background:var(--acc);border-color:var(--acc);}
+.sw-k{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;pointer-events:none;}
+.sw input:checked~.sw-k{transform:translateX(20px);}
+.finish-col{display:flex;flex-direction:column;gap:6px;}
+.fb{padding:11px 13px;background:var(--s1);border:1.5px solid var(--b2);border-radius:var(--r);cursor:pointer;transition:all .15s;box-shadow:var(--shadow);}
+.fb.sel{background:var(--acc2);border-color:var(--acc);}
+.fb-name{font-size:14px;font-weight:700;color:var(--tx);}
+.fb.sel .fb-name{color:var(--acc);}
+.fb-sub{font-size:11px;color:var(--tx3);font-family:var(--mono);margin-top:2px;}
+
+/* 예약 시간 스피너 */
+.booking-spinner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.bs-reset{height:36px;padding:0 14px;border-radius:18px;background:var(--s1);border:1.5px solid var(--b2);font-size:13px;font-weight:500;color:var(--tx2);cursor:pointer;box-shadow:var(--shadow);white-space:nowrap;flex-shrink:0;}
+.bs-reset.active-reset{background:var(--acc2);border-color:var(--acc);color:var(--acc);}
+.booking-row-new{display:flex;flex-direction:column;gap:8px;}
+.bs-row1{display:flex;align-items:center;gap:8px;}
+.bs-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.bs-chip{height:34px;padding:0 11px;border-radius:17px;background:var(--s2);border:1.5px solid var(--b2);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;transition:all .13s;}
+.bs-chip.sel{background:var(--acc2);border-color:var(--acc);color:var(--acc);}
+.bs-chip:active{background:var(--s3);}
+.bs-adj-row{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.bs-adj-btn{height:34px;padding:0 11px;border-radius:8px;background:var(--s2);border:1.5px solid var(--b2);font-size:13px;font-weight:600;color:var(--tx2);cursor:pointer;}
+.bs-adj-btn:active{background:var(--s3);}
+.bs-cur-val{font-size:15px;font-weight:700;font-family:var(--mono);color:var(--acc);min-width:58px;text-align:center;flex-shrink:0;}
+
+/* 미리보기 */
+.prev-wrap{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow);}
+.prev-item{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--b1);}
+.prev-item:last-child{border-bottom:none;}
+.prev-item.off{opacity:.35;}
+.prev-dot{width:6px;height:6px;border-radius:50%;background:var(--acc);flex-shrink:0;}
+.prev-item.off .prev-dot{background:var(--tx3);}
+.prev-name{font-size:13px;color:var(--tx2);}
+.prev-item.off .prev-name{text-decoration:line-through;color:var(--tx3);}
+.prev-est{font-size:12px;color:var(--tx3);font-family:var(--mono);margin-left:auto;}
+
+/* 희석 계산기 (설정 탭) */
+.dil-setup-grid{display:flex;flex-direction:column;gap:10px;}
+.dil-card{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow);}
+.dil-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px 6px;}
+.dil-card-name{font-size:14px;font-weight:700;color:var(--tx);flex:1;}
+.dil-card-ratio{font-size:13px;font-family:var(--mono);color:var(--blue);font-weight:500;background:var(--blue2);border:1px solid rgba(0,112,192,.2);border-radius:5px;padding:2px 8px;}
+.dil-card-prod{font-size:11px;color:var(--tx2);padding:0 14px 8px;}
+.dil-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 10px;}
+.dil-ctrl-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.06em;margin-bottom:6px;text-transform:uppercase;}
+.dil-vessel-group{display:flex;gap:5px;flex-wrap:wrap;}
+.dil-vessel-btn{padding:7px 11px;border-radius:7px;font-size:12px;font-weight:500;background:var(--s2);border:1.5px solid var(--b2);color:var(--tx2);cursor:pointer;font-family:var(--sans);}
+.dil-vessel-btn.sel{background:var(--blue2);border-color:var(--blue);color:var(--blue);}
+.dil-vol-wrap{display:flex;align-items:center;gap:7px;}
+.dil-vol-input{flex:1;height:38px;background:var(--s2);border:1.5px solid var(--b2);border-radius:7px;color:var(--tx);font-family:var(--mono);font-size:15px;font-weight:500;text-align:center;padding:0 8px;-moz-appearance:textfield;}
+.dil-vol-input::-webkit-outer-spin-button,.dil-vol-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.dil-vol-input:focus{outline:none;border-color:var(--blue);}
+.dil-vol-unit{font-size:12px;color:var(--tx3);font-family:var(--mono);}
+.dil-result{margin:0 14px 14px;display:flex;background:var(--s2);border:1px solid var(--b2);border-radius:9px;overflow:hidden;}
+.dil-res-item{flex:1;padding:10px 0;text-align:center;}
+.dil-res-item+.dil-res-item{border-left:1px solid var(--b1);}
+.dil-res-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.05em;margin-bottom:3px;}
+.dil-res-val{font-size:18px;font-weight:700;font-family:var(--mono);}
+.dil-res-val.conc{color:var(--blue);}
+.dil-res-val.water{color:var(--grn);}
+.dil-res-val.total{color:var(--tx2);}
+
+/* CTA */
+.setup-cta{position:fixed;bottom:0;left:0;right:0;padding:12px 20px 24px;background:linear-gradient(transparent,var(--bg) 28%);display:flex;flex-direction:column;align-items:center;gap:7px;}
+.cta-info{font-size:13px;font-family:var(--mono);color:var(--tx3);text-align:center;}
+.cta-info .hi{color:var(--tx2);}
+.cta-info .ok{color:var(--grn);}
+.cta-info .warn{color:var(--red);}
+.cta-info .neu{color:var(--blue);}
+.btn-go{width:100%;max-width:360px;height:52px;background:var(--accbtn);color:#fff;border:none;border-radius:26px;font-family:var(--sans);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(90,184,0,.35);transition:transform .15s;}
+.btn-go:active{transform:scale(.97);}
+
+/* ════ APP ════ */
+#app{display:none;flex-direction:column;height:100dvh;background:var(--bg);}
+/* ── 앱 헤더 — 상단 정보 바 ── */
+.ah{background:var(--s1);border-bottom:1px solid var(--b2);padding:8px 16px 6px;flex-shrink:0;box-shadow:var(--shadow);}
+/* 1행: 로고 + 현재시각 + 설정 */
+.ah-row1{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ah-l{display:flex;align-items:center;gap:9px;}
+.ah-logo{font-size:14px;font-weight:500;color:var(--tx2);}
+.ah-loc{font-family:var(--mono);font-size:11px;color:var(--tx3);background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:2px 7px;}
+.hd-clock{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--acc);letter-spacing:.04em;}
+.btn-cfg{background:var(--s2);border:1px solid var(--b2);border-radius:6px;color:var(--tx2);font-size:12px;padding:5px 11px;cursor:pointer;font-family:var(--sans);}
+/* 2행: 예약·경과·남은·예상소요 */
+.ah-row2{display:flex;align-items:center;gap:0;margin-top:5px;background:var(--s2);border-radius:8px;overflow:hidden;}
+.ah-stat{flex:1;display:flex;flex-direction:column;align-items:center;padding:5px 4px;}
+.ah-stat+.ah-stat{border-left:1px solid var(--b1);}
+.ah-stat-lbl{font-size:9px;color:var(--tx3);font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px;}
+.ah-stat-val{font-size:14px;font-weight:700;font-family:var(--mono);color:var(--tx);}
+.ah-stat-val.ac{color:var(--acc);}
+.ah-stat-val.ok{color:var(--grn);}
+.ah-stat-val.tight{color:var(--ora);}
+.ah-stat-val.over{color:var(--red);}
+/* 일시정지 상태 */
+.paused-banner{display:none;background:var(--ora);color:#fff;text-align:center;font-size:12px;font-weight:700;padding:4px;font-family:var(--sans);flex-shrink:0;}
+.paused-banner.on{display:block;}
+
+/* 앱 탭 */
+.app-tabs{display:flex;background:var(--s1);border-bottom:1.5px solid var(--b2);flex-shrink:0;}
+.app-tab{flex:1;height:38px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--tx3);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;gap:5px;}
+.app-tab.on{color:var(--acc);border-bottom-color:var(--acc);}
+
+/* booking bar */
+.bbar{background:var(--s1);border-bottom:1px solid var(--b2);padding:7px 16px;flex-shrink:0;display:none;align-items:center;justify-content:space-between;gap:16px;}
+.bbar.on{display:flex;}
+.bbar-title{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.06em;}
+.bbar-slots{font-size:13px;font-family:var(--mono);color:var(--tx2);}
+.bbar-slots .sep{color:var(--tx3);margin:0 4px;}
+.bbar-proj-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.06em;}
+.bbar-proj-val{font-size:17px;font-weight:700;font-family:var(--mono);}
+.col-ok{color:var(--grn);}
+.col-tight{color:var(--ora);}
+.col-over{color:var(--red);}
+
+/* progress */
+.pb{background:var(--s1);border-bottom:1px solid var(--b1);padding:7px 16px 9px;flex-shrink:0;}
+.pb-meta{display:flex;justify-content:space-between;margin-bottom:5px;}
+.pb-meta span{font-size:11px;color:var(--tx3);font-family:var(--mono);}
+.pb-meta .pct{color:var(--acc);}
+.bar-t{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.bar-f{height:100%;background:var(--accbtn);border-radius:2px;transition:width .4s;width:0%;}
+
+/* 패널 공통 */
+/* scroll 영역 — 2열 그리드 */
+.app-panel{display:none;flex:1;overflow-y:auto;padding:12px 16px 16px;flex-direction:column;gap:8px;}
+.app-panel.on{display:flex;}
+
+#scroll{
+  display:none;
+  flex:1;overflow-y:auto;
+  padding:12px 16px 16px;
+  grid-template-columns:1fr 1fr;
+  grid-auto-rows:min-content;
+  gap:8px;
+  align-content:start;
+}
+#scroll.on{display:grid;}
+
+/* active/next 카드는 전체 너비 */
+.sc.active{grid-column:1/-1;border-color:var(--acc);box-shadow:0 0 0 1px rgba(58,125,0,.15),0 4px 20px rgba(0,0,0,.12);}
+.sc.next{grid-column:1/-1;border-color:rgba(0,112,192,.35);}
+
+/* ── STEP CARD ── */
+.sc{background:var(--s1);border:1.5px solid var(--b2);border-radius:var(--rl);overflow:hidden;transition:all .2s;position:relative;box-shadow:var(--shadow);}
+.sc.done{background:#f0f7e8;border-color:rgba(58,125,0,.3);}
+.sc.pending{opacity:.4;}
+.sc.skipped{opacity:.2;pointer-events:none;}
+
+.sc.active::before,.sc.done::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc);border-radius:3px 0 0 3px;}
+.sc.active::before{animation:pls 1.6s ease-in-out infinite;}
+.sc.next::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:3px 0 0 3px;}
+.sc.skipped::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tx3);border-radius:3px 0 0 3px;}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.25}}
+
+.ct{display:flex;align-items:center;padding:11px 12px 9px;gap:9px;flex-wrap:nowrap;}
+.nb{width:26px;height:26px;border-radius:6px;background:var(--s3);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--tx3);flex-shrink:0;font-weight:500;}
+.sc.active .nb{background:var(--acc2);border-color:rgba(58,125,0,.3);color:var(--acc);}
+.sc.done .nb{background:var(--acc2);border-color:rgba(58,125,0,.3);color:var(--acc);}
+.sc.next .nb{background:var(--blue2);border-color:rgba(0,112,192,.25);color:var(--blue);}
+.cm{flex:1;min-width:0;overflow:hidden;}
+.ct-name{font-size:14px;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sc.active .ct-name{font-size:16px;white-space:normal;}
+.sc.next .ct-name{font-size:15px;white-space:normal;}
+.sc.done .ct-name{font-size:13px;color:var(--tx3);text-decoration:line-through;text-decoration-color:var(--tx3);}
+.sc.pending .ct-name{font-size:13px;color:var(--tx2);}
+.ct-prod{font-size:11px;color:var(--tx2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.8;}
+.sc.done .ct-prod,.sc.pending .ct-prod{display:none;}
+.cr{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.sc.done .ct,.sc.pending .ct{padding:8px 10px 7px;gap:7px;}
+
+/* right badges */
+.est-b{font-family:var(--mono);font-size:11px;color:var(--tx3);background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:2px 6px;white-space:nowrap;}
+.sc.active .est-b{display:none;}
+.next-badge{display:none;font-size:10px;font-family:var(--mono);font-weight:500;color:var(--blue);background:var(--blue2);border:1px solid rgba(0,112,192,.2);border-radius:4px;padding:2px 7px;}
+.sc.next .next-badge{display:block;}
+.sc.next .est-b{display:block;}
+.sc.done .next-badge,.sc.done .est-b,.sc.done .step-tmr{display:none !important;}
+.sc.pending .next-badge,.sc.pending .step-tmr,.sc.pending .done-b,.sc.pending .chk,.sc.pending .skip-lbl{display:none !important;}
+.step-tmr{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--acc);letter-spacing:.05em;display:none;min-width:68px;text-align:right;}
+.sc.active .step-tmr{display:block;}
+.done-b{font-family:var(--mono);font-size:11px;color:var(--acc);background:var(--acc2);border:1px solid rgba(58,125,0,.2);border-radius:4px;padding:2px 7px;display:none;}
+.sc.done .done-b{display:block;}
+.chk{width:20px;height:20px;border-radius:50%;background:var(--acc);display:none;align-items:center;justify-content:center;flex-shrink:0;}
+.sc.done .chk{display:flex;}
+.skip-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);display:none;}
+.sc.skipped .skip-lbl{display:block;}
+
+/* detail panel */
+.cd{display:none;flex-direction:column;gap:6px;padding:0 12px 10px;}
+.sc.active .cd,.sc.done .cd,.sc.next .cd{display:flex;}
+.sc.done .cd{padding:0 10px 8px;}
+.dr{display:flex;align-items:flex-start;gap:9px;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:9px 12px;}
+.sc.active .dr{background:var(--acc3);border-color:rgba(58,125,0,.1);}
+.sc.next .dr{background:var(--blue2);border-color:rgba(0,112,192,.1);}
+.dl{font-size:10px;color:var(--tx3);font-family:var(--mono);width:44px;flex-shrink:0;padding-top:1px;letter-spacing:.04em;}
+.dv{font-size:13px;color:var(--tx);line-height:1.5;min-width:0;flex:1;}
+.dil{color:var(--blue);font-family:var(--mono);font-size:14px;font-weight:700;}
+.pt{display:inline-block;background:var(--blue2);border:1px solid rgba(0,112,192,.15);border-radius:4px;padding:2px 7px;font-size:12px;color:var(--blue);margin:2px 3px 0 0;white-space:normal;word-break:keep-all;}
+.ar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--acc3);border:1px solid rgba(58,125,0,.15);border-radius:8px;}
+.ar-l{font-size:12px;color:var(--tx3);}
+.ar-v{font-family:var(--mono);font-size:14px;color:var(--acc);font-weight:700;}
+.ar-d{font-family:var(--mono);font-size:12px;}
+.ar-d.fast{color:var(--grn);}
+.ar-d.slow{color:var(--ora);}
+
+/* 가로모드 */
+@media (orientation:landscape){
+  .cd{flex-direction:row;flex-wrap:wrap;}
+  .cd .dr{flex:1 1 calc(50% - 3px);min-width:0;}
+  .cd .ar{flex:1 1 100%;}
+  .cd .dr.pts-row{flex:1 1 100%;}
+  .app-tab{font-size:11px;}
+  .ah{padding:6px 16px;}
+  .pb{padding:5px 16px 7px;}
+}
+
+/* action row */
+.acrow{display:none;padding:4px 12px 14px;gap:6px;flex-shrink:0;}
+.sc.active .acrow{display:flex !important;}
+/* 버튼 비율: 이전1 스킵2 일시정지2 완료5 */
+.btn-undo-s{flex:1;height:56px;background:var(--s2);color:var(--tx2);border:1.5px solid var(--b2);border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.btn-undo-s:active{background:var(--s3);}
+.btn-skip-s{flex:2;height:56px;background:var(--s2);color:var(--tx2);border:1.5px solid var(--b2);border-radius:12px;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-skip-s:active{background:var(--s3);}
+.btn-pause-s{flex:2;height:56px;background:var(--s2);color:var(--ora);border:1.5px solid rgba(192,96,0,.3);border-radius:12px;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-pause-s.paused{background:var(--ora);color:#fff;border-color:var(--ora);}
+.btn-pause-s:active{opacity:.85;}
+.btn-done-s{flex:5;height:56px;background:var(--accbtn);color:#fff;border:none;border-radius:12px;font-family:var(--sans);font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(90,184,0,.3);}
+.btn-done-s:active{opacity:.85;transform:scale(.98);}
+
+/* bottom strip */
+.bot{background:var(--s1);border-top:1px solid var(--b2);padding:8px 16px 14px;flex-shrink:0;display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 -1px 4px rgba(0,0,0,.06);}
+.bi{display:flex;flex-direction:column;align-items:center;}
+.bi-l{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:.06em;margin-bottom:3px;}
+.bi-v{font-size:15px;font-weight:700;font-family:var(--mono);color:var(--tx);}
+.bi-v.ac{color:var(--acc);}
+.bdiv{width:1px;background:var(--b1);margin:2px 4px;}
+
+/* info panel */
+#info-panel,.dil-main-panel{display:none;flex:1;overflow-y:auto;padding:14px 16px 20px;flex-direction:column;gap:16px;}
+#info-panel.on,.dil-main-panel.on{display:flex;}
+.ip-section-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--tx3);text-transform:uppercase;font-family:var(--mono);margin-bottom:8px;}
+.ip-preset-card{background:var(--s1);border:1.5px solid var(--acc);border-radius:var(--rl);padding:14px 16px;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--shadow);}
+.ip-preset-icon{font-size:28px;flex-shrink:0;margin-top:2px;}
+.ip-preset-body{flex:1;min-width:0;}
+.ip-preset-name{font-size:17px;font-weight:700;color:var(--acc);margin-bottom:4px;}
+.ip-preset-time{font-size:12px;color:var(--blue);font-family:var(--mono);margin-bottom:6px;}
+.ip-preset-flow{font-size:12px;color:var(--tx2);line-height:1.65;}
+.ip-preset-rec{font-size:12px;color:var(--ora);font-family:var(--mono);margin-top:6px;}
+.ip-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ip-opt{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:10px 13px;display:flex;align-items:center;gap:9px;box-shadow:var(--shadow);}
+.ip-opt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ip-opt-dot.on{background:var(--acc);}
+.ip-opt-dot.off{background:var(--tx3);}
+.ip-opt-name{font-size:13px;font-weight:500;color:var(--tx);}
+.ip-opt.inactive .ip-opt-name{color:var(--tx3);}
+.ip-opt-badge{margin-left:auto;font-size:11px;font-family:var(--mono);padding:2px 7px;border-radius:4px;white-space:nowrap;}
+.ip-opt-badge.on{background:var(--acc2);color:var(--acc);}
+.ip-opt-badge.off{background:var(--s3);color:var(--tx3);}
+.ip-steps{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden;box-shadow:var(--shadow);}
+.ip-step{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--b1);}
+.ip-step:last-child{border-bottom:none;}
+.ip-step.done-s{opacity:.45;}
+.ip-step.cur-s{background:var(--acc3);}
+.ip-step-n{font-family:var(--mono);font-size:11px;color:var(--tx3);width:22px;flex-shrink:0;text-align:center;}
+.ip-step.cur-s .ip-step-n{color:var(--acc);}
+.ip-step-name{font-size:13px;font-weight:500;color:var(--tx);flex:1;}
+.ip-step.done-s .ip-step-name{text-decoration:line-through;color:var(--tx3);}
+.ip-step-dil-calc{font-size:11px;color:var(--blue);font-family:var(--mono);margin-top:2px;font-weight:400;}
+.ip-step-est{font-size:11px;color:var(--tx3);font-family:var(--mono);white-space:nowrap;}
+.ip-step-chk{width:16px;height:16px;border-radius:50%;background:var(--acc);display:none;align-items:center;justify-content:center;flex-shrink:0;}
+.ip-step.done-s .ip-step-chk{display:flex;}
+@media (orientation:landscape){
+  .ip-opts{grid-template-columns:repeat(4,1fr);}
+  .dil-setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+}
+
+/* 세차 기록 탭 */
+.log-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:48px 0;color:var(--tx3);}
+.log-empty-icon{font-size:40px;}
+.log-empty-txt{font-size:14px;font-family:var(--mono);}
+.log-entry{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);overflow:hidden;cursor:pointer;box-shadow:var(--shadow);margin-bottom:2px;}
+.log-entry.open{border-color:var(--acc);}
+.log-head{display:flex;align-items:center;gap:10px;padding:13px 16px;}
+.log-date{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--tx3);flex-shrink:0;}
+.log-course{font-size:14px;font-weight:700;color:var(--tx);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.log-duration{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--acc);flex-shrink:0;}
+.log-chevron{color:var(--tx3);transition:transform .2s;flex-shrink:0;}
+.log-entry.open .log-chevron{transform:rotate(180deg);}
+.log-summary{display:flex;gap:0;padding:0 16px 12px;flex-wrap:wrap;}
+.log-sum-item{flex:1;min-width:70px;text-align:center;padding:8px 4px;background:var(--s2);border-radius:8px;margin:2px;}
+.log-sum-lbl{font-size:10px;color:var(--tx3);font-family:var(--mono);margin-bottom:3px;letter-spacing:.04em;}
+.log-sum-val{font-size:14px;font-weight:700;font-family:var(--mono);color:var(--tx);}
+.log-sum-val.good{color:var(--grn);}
+.log-sum-val.bad{color:var(--ora);}
+.log-steps{display:none;border-top:1px solid var(--b1);padding:10px 16px 12px;flex-direction:column;gap:5px;}
+.log-entry.open .log-steps{display:flex;}
+.log-step-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;background:var(--s2);}
+.log-step-row.skipped{opacity:.4;}
+.log-step-n{font-family:var(--mono);font-size:11px;color:var(--tx3);width:20px;flex-shrink:0;}
+.log-step-name{font-size:12px;font-weight:500;color:var(--tx);flex:1;}
+.log-step-row.skipped .log-step-name{text-decoration:line-through;color:var(--tx3);}
+.log-step-actual{font-family:var(--mono);font-size:12px;color:var(--tx2);flex-shrink:0;}
+.log-step-delta{font-family:var(--mono);font-size:11px;flex-shrink:0;}
+.log-step-delta.fast{color:var(--grn);}
+.log-step-delta.slow{color:var(--ora);}
+.log-del-btn{display:flex;align-items:center;justify-content:center;gap:6px;margin:8px 0 4px;padding:10px;background:var(--red2);border:1px solid rgba(192,48,0,.2);border-radius:8px;color:var(--red);font-size:13px;cursor:pointer;font-family:var(--sans);}
+.log-toolbar{display:flex;align-items:center;justify-content:space-between;padding:2px 0 8px;}
+.log-count{font-size:12px;color:var(--tx3);font-family:var(--mono);}
+.log-clear-all{font-size:12px;color:var(--tx3);padding:5px 10px;background:var(--s2);border:1px solid var(--b2);border-radius:6px;cursor:pointer;font-family:var(--sans);}
+
+/* 커스텀 코스 편집 모달 */
+#custom-modal{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.4);display:none;align-items:flex-end;justify-content:center;}
+#custom-modal.show{display:flex;}
+.cm-box{background:var(--s1);border-radius:20px 20px 0 0;padding:20px 20px 36px;width:100%;max-width:480px;display:flex;flex-direction:column;gap:14px;max-height:80vh;overflow-y:auto;}
+.cm-title{font-size:17px;font-weight:700;color:var(--tx);}
+.cm-field label{font-size:12px;color:var(--tx3);display:block;margin-bottom:5px;font-family:var(--mono);}
+.cm-field input,.cm-field textarea{width:100%;background:var(--s2);border:1.5px solid var(--b2);border-radius:8px;color:var(--tx);font-family:var(--sans);font-size:14px;padding:10px 12px;}
+.cm-field input:focus,.cm-field textarea:focus{outline:none;border-color:var(--acc);}
+.cm-emoji-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.cm-emoji-btn{width:38px;height:38px;border-radius:8px;background:var(--s2);border:1.5px solid var(--b2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cm-emoji-btn.sel{border-color:var(--acc);background:var(--acc2);}
+.cm-tog-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.cm-tog{display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:9px 12px;}
+.cm-tog-name{font-size:13px;font-weight:500;color:var(--tx);}
+.cm-finish-row{display:flex;gap:6px;}
+.cm-fin-btn{flex:1;padding:9px;text-align:center;background:var(--s2);border:1.5px solid var(--b2);border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:600;color:var(--tx);}
+.cm-fin-btn.sel{background:var(--acc2);border-color:var(--acc);color:var(--acc);}
+.cm-actions{display:flex;gap:8px;}
+.cm-save{flex:1;height:48px;background:var(--accbtn);color:#fff;border:none;border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:700;cursor:pointer;}
+.cm-cancel{height:48px;padding:0 20px;background:var(--s2);border:1.5px solid var(--b2);border-radius:10px;font-family:var(--sans);font-size:14px;cursor:pointer;color:var(--tx2);}
+/* 현재 설정 저장 버튼 */
+.btn-save-as{width:100%;height:46px;background:var(--s1);border:2px dashed var(--acc);border-radius:var(--r);color:var(--acc);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;}
+.btn-save-as:active{background:var(--acc2);}
+.cm-section-lbl{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--tx3);text-transform:uppercase;font-family:var(--mono);margin-bottom:4px;}
+.cm-cur-summary{background:var(--s2);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--tx2);line-height:1.6;}
+.cm-slot-btns{display:flex;gap:8px;}
+.cm-slot-btn{flex:1;height:44px;border:1.5px solid var(--b2);border-radius:8px;background:var(--s2);color:var(--tx2);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .13s;}
+.cm-slot-btn.has-data{border-color:rgba(90,184,0,.3);color:var(--acc);}
+.cm-slot-btn:active{background:var(--s3);}
+
+/* done overlay */
+#done-ov{position:fixed;inset:0;z-index:400;background:rgba(245,245,243,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;overflow-y:auto;}
+#done-ov.show{display:flex;}
+.done-icon{width:72px;height:72px;border-radius:50%;background:var(--acc2);border:2px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:32px;animation:pop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.done-title{font-size:26px;font-weight:700;color:var(--tx);}
+.done-sub{font-size:14px;color:var(--tx2);}
+.done-stats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.dstat{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);padding:12px 16px;text-align:center;min-width:95px;box-shadow:var(--shadow);}
+.ds-l{font-size:11px;color:var(--tx3);margin-bottom:4px;}
+.ds-v{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--acc);}
+.btn-ok{height:46px;padding:0 32px;background:var(--accbtn);color:#fff;border:none;border-radius:24px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;}
+/* 단계 시간 업데이트 UI */
+.done-update-box{width:100%;max-width:420px;background:var(--s1);border:1.5px solid var(--b2);border-radius:var(--rl);padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+.done-update-title{font-size:13px;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:6px;}
+.done-update-sub{font-size:11px;color:var(--tx3);line-height:1.5;}
+.done-step-list{display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto;}
+.done-step-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:7px;background:var(--s2);}
+.done-step-name{font-size:12px;color:var(--tx);flex:1;}
+.done-step-old{font-size:11px;font-family:var(--mono);color:var(--tx3);text-decoration:line-through;}
+.done-step-arrow{font-size:10px;color:var(--tx3);}
+.done-step-new{font-size:12px;font-family:var(--mono);font-weight:700;}
+.done-step-new.faster{color:var(--grn);}
+.done-step-new.slower{color:var(--red);}
+.done-step-new.same{color:var(--tx3);}
+.done-update-btns{display:flex;gap:8px;}
+.btn-do-update{flex:1;height:42px;background:var(--accbtn);color:#fff;border:none;border-radius:9px;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;}
+.btn-skip-update{height:42px;padding:0 16px;background:var(--s2);color:var(--tx2);border:1.5px solid var(--b2);border-radius:9px;font-family:var(--sans);font-size:13px;cursor:pointer;}
+
+svg{display:block;}
+</style>
+</head>
+<body>
+
+
+<!-- ════ SETUP ════ -->
+<div id="setup">
+  <div class="setup-header">
+    <h1>오늘의 세차 코스</h1>
+    <p>워시존 개러지 김포IC점</p>
+  </div>
+  <div class="setup-tabs">
+    <div class="setup-tab on" id="stab-course" onclick="switchSetupTab('course')">코스 선택</div>
+    <div class="setup-tab" id="stab-option" onclick="switchSetupTab('option')">옵션 설정</div>
+    <div class="setup-tab" id="stab-dil" onclick="switchSetupTab('dil')">희석 설정</div>
+  </div>
+
+  <!-- 코스 선택 탭 -->
+  <div class="setup-pane on" id="spane-course">
+    <div class="preset-grid" id="pgrid"></div>
+  </div>
+
+  <!-- 옵션 설정 탭 -->
+  <div class="setup-pane" id="spane-option">
+    <div style="margin-bottom:14px;">
+      <div class="sec-lbl">코스 선택</div>
+      <div class="preset-grid" id="pgrid2"></div>
+    </div>
+    <div id="selected-course-banner" style="display:none;margin-bottom:12px;background:var(--acc2);border:1.5px solid var(--acc);border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:10px;">
+      <span id="scb-icon" style="font-size:20px;"></span>
+      <div><div id="scb-name" style="font-size:14px;font-weight:700;color:var(--acc);"></div><div id="scb-time" style="font-size:11px;color:var(--tx3);font-family:var(--mono);"></div></div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div class="sec-lbl">세부 옵션 &amp; 마감 코스</div>
+      <div class="opts-row">
+        <div class="tog-list">
+          <div class="tr"><div class="tr-l"><div class="tr-name">3Ph 프리워시</div><div class="tr-sub">알칼리 + 산성</div></div>
+            <label class="sw"><input type="checkbox" id="t3ph" onchange="onDet()"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+          <div class="tr"><div class="tr-l"><div class="tr-name">유리 유막 제거</div><div class="tr-sub">더클래스 + 광택기</div></div>
+            <label class="sw"><input type="checkbox" id="toil" onchange="onDet()"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+          <div class="tr"><div class="tr-l"><div class="tr-name">유리 발수 코팅</div><div class="tr-sub">MOTIVE X</div></div>
+            <label class="sw"><input type="checkbox" id="tglass" onchange="onDet()"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+          <div class="tr"><div class="tr-l"><div class="tr-name">페인트 클렌징</div><div class="tr-sub">화이트닝샷 + 광택기</div></div>
+            <label class="sw"><input type="checkbox" id="tpekl" onchange="onDet()"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+        </div>
+        <div class="finish-col">
+          <div class="fb" data-v="liquid" onclick="selFin(this)"><div class="fb-name">물왁스</div><div class="fb-sub">불렛 L001</div></div>
+          <div class="fb" data-v="touchless" onclick="selFin(this)"><div class="fb-name">습식 발수</div><div class="fb-sub">더클래스 워터에이징</div></div>
+          <div class="fb sel" data-v="solid" onclick="selFin(this)"><div class="fb-name">고체왁스</div><div class="fb-sub">소프트99 격방수</div></div>
+          <div class="fb fb-inactive" data-v="none" onclick="selFin(this)"><div class="fb-name" style="color:var(--tx3)">왁스 없음</div><div class="fb-sub">드라잉 후 바로 종료</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div class="sec-lbl">개러지 예약 시간</div>
+      <div class="booking-row-new">
+        <div class="bs-row1">
+          <button class="bs-reset" id="bs-reset-btn" onclick="resetBook()">미설정</button>
+          <div class="bs-cur-val" id="bs-cur-val">미설정</div>
+          <button class="bs-adj-btn" onclick="adjBook30(-1)">－30분</button>
+          <button class="bs-adj-btn" onclick="adjBook30(1)">＋30분</button>
+        </div>
+        <div class="bs-chips">
+          <button class="bs-chip" data-h="1" onclick="setBookH(1)">1H</button>
+          <button class="bs-chip" data-h="2" onclick="setBookH(2)">2H</button>
+          <button class="bs-chip" data-h="3" onclick="setBookH(3)">3H</button>
+          <button class="bs-chip" data-h="4" onclick="setBookH(4)">4H</button>
+          <button class="bs-chip" data-h="5" onclick="setBookH(5)">5H</button>
+          <button class="bs-chip" data-h="6" onclick="setBookH(6)">6H</button>
+          <button class="bs-chip" data-h="8" onclick="setBookH(8)">8H</button>
+          <button class="bs-chip" data-h="12" onclick="setBookH(12)">12H</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-lbl" id="prev-lbl-title">오늘 코스 미리보기</div>
+      <div class="prev-wrap" id="prevlist"></div>
+    </div>
+    <div>
+      <button class="btn-save-as" onclick="openSaveAsModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        현재 설정을 나만의 코스로 저장
+      </button>
+    </div>
+  </div>
+
+  <!-- 희석 설정 탭 -->
+  <div class="setup-pane" id="spane-dil">
+    <div class="dil-setup-grid" id="dil-setup-grid"></div>
+  </div>
+
+  <div class="setup-cta">
+    <div class="cta-info" id="ctainfo">—</div>
+    <button class="btn-go" onclick="startApp()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      세차 시작
+    </button>
+  </div>
+</div>
+
+<!-- 커스텀 코스 편집 모달 -->
+<div id="custom-modal">
+  <div class="cm-box">
+    <div class="cm-title" id="cm-title">나만의 코스 설정</div>
+
+    <!-- 저장 모드: 슬롯 선택 -->
+    <div id="cm-slot-section" style="display:none;">
+      <div class="cm-section-lbl">저장할 슬롯 선택</div>
+      <div class="cm-cur-summary" id="cm-cur-summary"></div>
+      <div style="margin-top:10px;">
+        <div class="cm-slot-btns" id="cm-slot-btns"></div>
+      </div>
+    </div>
+
+    <!-- 공통: 이름/아이콘/설명 -->
+    <div class="cm-field">
+      <label>코스 이름</label>
+      <input type="text" id="cm-name" placeholder="예: 내 주간 코스" maxlength="12">
+    </div>
+    <div class="cm-field">
+      <label>아이콘 선택</label>
+      <div class="cm-emoji-grid" id="cm-emoji-grid"></div>
+    </div>
+    <div class="cm-field">
+      <label>한 줄 설명 (선택)</label>
+      <input type="text" id="cm-desc" placeholder="예: 빠르게 관리하는 내 루틴" maxlength="20">
+    </div>
+
+    <!-- 편집 모드만: 옵션/마감 변경 -->
+    <div id="cm-opts-section">
+      <div class="cm-field">
+        <label>옵션</label>
+        <div class="cm-tog-grid">
+          <div class="cm-tog"><div class="cm-tog-name">3Ph 프리워시</div>
+            <label class="sw"><input type="checkbox" id="cm-3ph"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+          <div class="cm-tog"><div class="cm-tog-name">유리 유막 제거</div>
+            <label class="sw"><input type="checkbox" id="cm-oil"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+          <div class="cm-tog"><div class="cm-tog-name">유리 발수 코팅</div>
+            <label class="sw"><input type="checkbox" id="cm-glass"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+          <div class="cm-tog"><div class="cm-tog-name">페인트 클렌징</div>
+            <label class="sw"><input type="checkbox" id="cm-pekl"><div class="sw-t"></div><div class="sw-k"></div></label></div>
+        </div>
+      </div>
+      <div class="cm-field">
+        <label>마감 코스</label>
+        <div class="cm-finish-row">
+          <div class="cm-fin-btn" data-v="liquid" onclick="cmSelFin(this)">물왁스</div>
+          <div class="cm-fin-btn" data-v="touchless" onclick="cmSelFin(this)">습식 발수</div>
+          <div class="cm-fin-btn sel" data-v="solid" onclick="cmSelFin(this)">고체왁스</div>
+          <div class="cm-fin-btn" data-v="none" onclick="cmSelFin(this)">없음</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cm-actions">
+      <button class="cm-cancel" onclick="closeCustomModal()">취소</button>
+      <button class="cm-save" id="cm-save-btn" onclick="saveCustomCourse()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ APP ════ -->
+<div id="app">
+  <div class="ah">
+    <div class="ah-row1">
+      <div class="ah-l"><div class="ah-logo">🚗 디테일링</div><div class="ah-loc">워시존 김포IC</div></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="hd-clock" id="hdclock">00:00</div>
+        <button class="btn-cfg" onclick="goSetup()">설정</button>
+      </div>
+    </div>
+    <div class="ah-row2" id="ah-row2" style="display:none;">
+      <div class="ah-stat">
+        <div class="ah-stat-lbl">예약</div>
+        <div class="ah-stat-val" id="ah-book">—</div>
+      </div>
+      <div class="ah-stat">
+        <div class="ah-stat-lbl">경과</div>
+        <div class="ah-stat-val ac" id="ah-elapsed">00:00</div>
+      </div>
+      <div class="ah-stat">
+        <div class="ah-stat-lbl">남은 시간</div>
+        <div class="ah-stat-val" id="ah-remain">—</div>
+      </div>
+      <div class="ah-stat">
+        <div class="ah-stat-lbl">예상 소요</div>
+        <div class="ah-stat-val" id="ah-total-est">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="paused-banner" id="paused-banner">⏸ 일시정지 중 — 재개하려면 ▶ 버튼을 누르세요</div>
+  <div class="app-tabs">
+    <div class="app-tab on" id="tab-prog" onclick="switchTab('prog')">⏱ 진행</div>
+    <div class="app-tab" id="tab-dil" onclick="switchTab('dil')">🧪 희석</div>
+    <div class="app-tab" id="tab-info" onclick="switchTab('info')">ℹ 코스</div>
+    <div class="app-tab" id="tab-log" onclick="switchTab('log')">📋 기록</div>
+  </div>
+
+  <!-- 진행 뷰 -->
+  <div id="prog-view" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="bbar" id="bbar">
+      <div><div class="bbar-title">예약 현황</div><div class="bbar-slots" id="bslots">—</div></div>
+      <div style="text-align:right;"><div class="bbar-proj-lbl">예상 종료</div><div class="bbar-proj-val" id="bproj">—</div></div>
+    </div>
+    <div class="pb">
+      <div class="pb-meta"><span id="pblbl">0 / 0 단계 완료</span><span class="pct" id="pbpct">0%</span></div>
+      <div class="bar-t"><div class="bar-f" id="barf"></div></div>
+    </div>
+    <div class="app-panel" id="scroll" style="display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content;gap:8px;align-content:start;"></div>
+    <div class="bot">
+      <div class="bi"><div class="bi-l">현재시각</div><div class="bi-v ac" id="bsnow">—</div></div>
+      <div class="bdiv"></div>
+      <div class="bi"><div class="bi-l">완료</div><div class="bi-v" id="bsdone">0/0</div></div>
+      <div class="bdiv"></div>
+      <div class="bi"><div class="bi-l">이 단계</div><div class="bi-v" id="bsel">—</div></div>
+      <div class="bdiv"></div>
+      <div class="bi"><div class="bi-l">예상 종료</div><div class="bi-v" id="bsproj">—</div></div>
+    </div>
+  </div>
+
+  <!-- 희석 패널 -->
+  <div class="dil-main-panel" id="dil-main-panel">
+    <div class="dil-setup-grid" id="dil-app-grid"></div>
+  </div>
+
+  <!-- 코스 정보 패널 -->
+  <div id="info-panel">
+    <div><div class="ip-section-lbl">선택 코스</div><div class="ip-preset-card" id="ip-preset"></div></div>
+    <div><div class="ip-section-lbl">옵션 구성</div><div class="ip-opts" id="ip-opts"></div></div>
+    <div><div class="ip-section-lbl">희석 계산기</div><div class="dil-setup-grid" id="dil-info-grid"></div></div>
+    <div><div class="ip-section-lbl">단계 목록</div><div class="ip-steps" id="ip-steps"></div></div>
+  </div>
+
+  <!-- 기록 패널 -->
+  <div class="app-panel" id="log-panel"></div>
+</div>
+
+<!-- done overlay -->
+<div id="done-ov">
+  <div class="done-icon">✓</div>
+  <div class="done-title">세차 완료!</div>
+  <div class="done-sub" id="donesub">수고하셨습니다 🎉</div>
+  <div class="done-stats" id="donestats"></div>
+  <div class="done-update-box" id="done-update-box" style="display:none;">
+    <div class="done-update-title">⏱ 단계별 예상 시간 업데이트</div>
+    <div class="done-update-sub" id="done-update-sub"></div>
+    <div class="done-step-list" id="done-step-list"></div>
+    <div class="done-update-btns">
+      <button class="btn-skip-update" onclick="document.getElementById('done-update-box').style.display='none'">건너뛰기</button>
+      <button class="btn-do-update" onclick="applyTimeUpdate()">이 시간으로 업데이트</button>
+    </div>
+  </div>
+  <button class="btn-ok" onclick="document.getElementById('done-ov').classList.remove('show')">확인</button>
+</div>
+
+<script>
+
+/* ══ ALL STEPS ══ */
+var ALL=[
+  {id:'prep',name:'세차 준비',prod:'장비 꺼내기 · 세팅',est:5,req:true,
+   dil:null,amt:null,pts:['장비 꺼내서 세팅','약품 준비 및 희석액 만들기','세차장 환경 확인']},
+  /* 초고속 제외 단계들 */
+  {id:'interior',name:'실내 세차',prod:'청소기 · 에어건 · 타월',est:15,req:false,tag:'need-interior',
+   dil:null,amt:null,pts:['매트 분리 후 청소기 작업','에어건으로 틈새·시트 먼지 제거','내부 유리 타월 마무리']},
+  {id:'wheel',name:'휠·타이어 세척',prod:'더클래스 다이나믹 휠클리너 익스트랙트 S',est:20,req:false,tag:'need-wheel',
+   dil:'1:10',amt:'',pts:['폼 압축분무기 사용','휠 안쪽까지 꼼꼼히','타이어 사이드월 함께']},
+  {id:'pre1',name:'고압수 프리워시 + 하부',prod:'세차장 고압수',est:10,req:true,
+   dil:null,amt:null,pts:['하부 집중 고압','큰 오염·새똥 우선 제거','위에서 아래']},
+  {id:'alkali',name:'알칼리 프리워시',prod:'Labocosmetica Primus 2.0',est:10,req:false,tag:'3ph',
+   dil:'1:100',amt:'',pts:['하단부 집중','과하게 강하지 않게','드웰 1~2분 후 다음 단계']},
+  {id:'snowfoam',name:'스노우폼',prod:'세차장 폼랜스 + 카샴푸',est:5,req:true,
+   dil:null,amt:'샴푸 80~100ml',pts:['세차장 장비 사용','전체 도포 후 5분 드웰링','건조하지 않게 주의']},
+  {id:'rinse-foam',name:'고압수 헹굼 (폼)',prod:'세차장 고압수',est:5,req:true,
+   dil:null,amt:null,pts:['위에서 아래로 헹굼','폼 완전 제거 확인']},
+  {id:'acid',name:'산성 프리워시',prod:'Labocosmetica Purifica',est:10,req:false,tag:'3ph',
+   dil:'1:200',amt:'',pts:['알칼리 중화 + 미네랄 제거','전체 패널 도포','드웰 1분 후 헹굼']},
+  {id:'rinse-acid',name:'고압수 헹굼 (산성)',prod:'세차장 고압수',est:5,req:false,tag:'3ph',
+   dil:null,amt:null,pts:['산성제 완전 헹굼','하부 재확인']},
+  {id:'mitwash',name:'중성 카샴푸 미트 세차',prod:'Labocosmetica Semper',est:15,req:false,tag:'need-mitwash',
+   dil:null,amt:'',pts:['2버킷 세차 권장','위에서 아래 순서','미트 자주 헹굼']},
+  {id:'rinse-mit',name:'고압수 헹굼 + 하부 세척',prod:'세차장 고압수',est:10,req:false,tag:'need-mitwash',
+   dil:null,amt:null,pts:['전체 꼼꼼히 헹굼','하단·휠하우스 재확인']},
+  {id:'oilfilm',name:'유리 유막 제거',prod:'더클래스 유막제거제 · 벤딕트 듀얼 광택기',est:20,req:false,tag:'oil',
+   dil:null,amt:'유리 전체 30~50ml',pts:['물기 완전 제거 후 작업','어플리케이터 원형 도포','백화 후 닦아내기','광택기 저속']},
+  {id:'pekl',name:'페인트 클렌징 (페클)',prod:'더클래스 화이트닝샷 · 벤딕트 듀얼 광택기',est:20,req:false,tag:'pekl',
+   dil:null,amt:'패널별 소량',pts:['뒤펜더·하단 집중','광택기 저속','가볍게 원 그리며','타월로 닦아내기']},
+  {id:'final',name:'최종 고압수 헹굼',prod:'세차장 고압수',est:5,req:false,tag:'need-final',
+   dil:null,amt:null,pts:['전체 최종 헹굼','세제·클렌져 잔여 확인']},
+  /* 보호막 코스: rinse-mit 직후 touchless → dry 순서를 위해 touchless-pre 삽입 */
+  {id:'touchless-pre',name:'습식 발수 코팅 (헹굼 직후)',prod:'더클래스 워터에이징 익스트렉트 S',est:10,req:false,tag:'protect-coat',
+   dil:null,amt:'젖은 상태에서 전체 도포',pts:['고압수 헹굼 직후 도포','터치리스 코팅 한 번에','드라잉 전 적용']},
+  {id:'dry',name:'드라잉',prod:'아이버스트 프로 · 무선 에어건 · 드라잉 타월',est:20,req:true,
+   dil:null,amt:null,pts:['아이버스트로 큰 물기 제거','틈새·도어 엣지 에어건','드라잉 타월 마무리']},
+  {id:'glass-coat',name:'유리 발수 코팅',prod:'MOTIVE X 유리 발수코팅제 · 어플리케이터',est:20,req:false,tag:'glass',
+   dil:null,amt:'20~30ml',pts:['물기 완전 제거 후 작업','얇고 균일하게 도포','전면→측면→후면 순']},
+  /* 마감 순서: 물왁스 → 습식발수 → 고체왁스 */
+  {id:'liquid-wax',name:'물왁스',prod:'불렛 L001 퍼포먼스 물왁스',est:20,req:false,tag:'liquid',
+   dil:null,amt:'전체 20~30ml',pts:['얇게 도포 후 닦아내기','패널별 작업']},
+  {id:'touchless',name:'습식 발수 코팅',prod:'더클래스 워터에이징 익스트렉트 S',est:10,req:false,tag:'touchless',
+   dil:null,amt:'',pts:['드라잉 후 적용','터치리스 코팅 한 번에']},
+  {id:'solid-wax',name:'고체왁스',prod:'소프트99 격방수 · 벤딕트 듀얼 광택기',est:30,req:false,tag:'solid',
+   dil:null,amt:'저속 + 매우 얇게',pts:['두껍게 바르지 않기','버핑 손버핑 권장','광택기 저속']},
+  {id:'tire',name:'타이어 광택제',prod:'더클래스 매트블랙 타이어 광택제',est:10,req:false,tag:'need-tire',
+   dil:null,amt:'타이어 1개당 소량',pts:['타이어 완전 건조 후 적용','매트 마감','사이드월 전체 균일']},
+  {id:'cleanup',name:'장비 정리',prod:'세척 · 정리 · 최종 확인',est:10,req:true,
+   dil:null,amt:null,pts:['사용 장비 전체 세척','약품 정리 및 수납','개러지 퇴실 전 최종 확인']},
+];
+
+/* ══ 기본 프리셋 10개 + 커스텀 슬롯 2개 ══ */
+var DEFAULT_PRESETS=[
+  {id:'basic',icon:'💧',name:'기본 유지관리 코스',time:'약 2h25m',rec:'평소 주간 관리',
+   skip:'3pH, 유막제거, 페클, 고체왁스',
+   flow:'실내→휠→고압수→스노우폼→미트→드라잉→물왁스→타이어',
+   cfg:{ph3:false,oil:false,glass:false,pekl:false,fin:'liquid'}},
+  {id:'ph3',icon:'🧪',name:'3pH 유지관리 코스',time:'약 2h50m',rec:'오염 누적 시',
+   skip:'유막제거, 페클, 고체왁스',
+   flow:'실내→휠→알칼리→스노우폼→산성→미트→드라잉→물왁스→타이어',
+   cfg:{ph3:true,oil:false,glass:false,pekl:false,fin:'liquid'}},
+  {id:'quick',icon:'⚡',name:'초고속 유지관리 코스',time:'약 1h',rec:'평일 야간 / 급할 때',
+   skip:'실내, 휠, 미트, 3pH, 코팅, 왁스, 타이어',
+   flow:'고압수+하부→스노우폼→헹굼+하부세척→드라잉',
+   cfg:{ph3:false,oil:false,glass:false,pekl:false,fin:'liquid'}},
+  {id:'protect',icon:'🛡',name:'보호막 유지 코스',time:'약 2h15m',rec:'발수력 회복',
+   skip:'3pH, 유막제거, 페클, 고체왁스',
+   flow:'실내→휠→스노우폼→미트→습식발수코팅→드라잉→타이어',
+   cfg:{ph3:false,oil:false,glass:false,pekl:false,fin:'touchless'}},
+  {id:'gloss',icon:'✨',name:'광도 회복 코스',time:'약 3h15m',rec:'광도 회복 목적',
+   skip:'유리 작업, 고체왁스',
+   flow:'실내→휠→3pH→미트→페클→드라잉→물왁스→타이어',
+   cfg:{ph3:true,oil:false,glass:false,pekl:true,fin:'liquid'}},
+  {id:'glass',icon:'🪟',name:'유리 집중 코스',time:'약 2h40m',rec:'장마철 / 우천 전 대비',
+   skip:'3pH, 페클, 고체왁스',
+   flow:'실내→휠→스노우폼→미트→유막제거→드라잉→유리발수코팅',
+   cfg:{ph3:false,oil:true,glass:true,pekl:false,fin:'none'}},
+  {id:'rainy',icon:'🌧',name:'장마 대비 코스',time:'약 3h35m',rec:'우천 대비',
+   skip:'페클, 고체왁스',
+   flow:'실내→휠→3pH→미트→유막제거→드라잉→유리발수코팅→물왁스→타이어',
+   cfg:{ph3:true,oil:true,glass:true,pekl:false,fin:'liquid'}},
+  {id:'winter',icon:'❄️',name:'겨울 하부관리 코스',time:'약 2h50m',rec:'염화칼슘 제거',
+   skip:'유막제거, 고체왁스',
+   flow:'실내→휠→3pH→스노우폼→미트→드라잉→물왁스→타이어',
+   cfg:{ph3:true,oil:false,glass:false,pekl:false,fin:'liquid'}},
+  {id:'wax',icon:'👑',name:'프리미엄 왁스 코스',time:'약 3h25m',rec:'광빨 극대화',
+   skip:'유막제거, 유리발수코팅',
+   flow:'실내→휠→3pH→미트→페클→드라잉→고체왁스→타이어',
+   cfg:{ph3:true,oil:false,glass:false,pekl:true,fin:'solid'}},
+  {id:'full',icon:'💎',name:'풀 디테일링 코스',time:'약 4h5m',rec:'시즌 리셋 / 전체 리셋',
+   skip:'물왁스, 습식발수',
+   flow:'실내→휠→3pH→미트→유막→페클→드라잉→유리발수→고체왁스→타이어',
+   cfg:{ph3:true,oil:true,glass:true,pekl:true,fin:'solid'}},
+];
+var CUSTOM_KEY='washzone_custom_courses';
+var ORDER_KEY='washzone_preset_order';
+
+function loadCustomCourses(){
+  try{var r=localStorage.getItem(CUSTOM_KEY);return r?JSON.parse(r):[{id:'custom1',slot:1,icon:'⭐',name:'나만의 코스 1',time:'',rec:'직접 설정',flow:'',cfg:{ph3:false,oil:false,glass:false,pekl:false,fin:'liquid'},empty:true},{id:'custom2',slot:2,icon:'🎯',name:'나만의 코스 2',time:'',rec:'직접 설정',flow:'',cfg:{ph3:false,oil:false,glass:false,pekl:false,fin:'liquid'},empty:true}];}
+  catch(e){return [{id:'custom1',slot:1,icon:'⭐',name:'나만의 코스 1',time:'',rec:'직접 설정',flow:'',cfg:{ph3:false,oil:false,glass:false,pekl:false,fin:'liquid'},empty:true},{id:'custom2',slot:2,icon:'🎯',name:'나만의 코스 2',time:'',rec:'직접 설정',flow:'',cfg:{ph3:false,oil:false,glass:false,pekl:false,fin:'liquid'},empty:true}];}
+}
+function saveCustomCourses(arr){try{localStorage.setItem(CUSTOM_KEY,JSON.stringify(arr));}catch(e){}}
+
+function loadOrder(){try{var r=localStorage.getItem(ORDER_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function saveOrder(arr){try{localStorage.setItem(ORDER_KEY,JSON.stringify(arr));}catch(e){}}
+
+function getAllPresets(){
+  var customs=loadCustomCourses();
+  var all=DEFAULT_PRESETS.concat(customs);
+  var order=loadOrder();
+  if(!order) return all;
+  var map={};all.forEach(function(p){map[p.id]=p;});
+  var sorted=[];
+  order.forEach(function(id){if(map[id])sorted.push(map[id]);});
+  all.forEach(function(p){if(order.indexOf(p.id)<0)sorted.push(p);});
+  return sorted;
+}
+
+/* ══ 희석 제품 데이터 ══ */
+var DIL_PRODUCTS=[
+  {id:'wheel',stepId:'wheel',name:'휠·타이어 세척',prod:'다이나믹 휠클리너 익스트랙트 S',vessel:'폼 압축분무기',defaultVol:400,
+   levels:[{label:'약(1:10)',ratio:10},{label:'보통(1:5)',ratio:5},{label:'심(1:3)',ratio:3}],defaultLevel:0},
+  {id:'alkali',stepId:'alkali',name:'알칼리 프리워시',prod:'Labocosmetica Primus 2.0',vessel:'압축분무기',defaultVol:2000,
+   levels:[{label:'약(1:100)',ratio:100},{label:'중(1:80)',ratio:80},{label:'강(1:50)',ratio:50}],defaultLevel:0},
+  {id:'acid',stepId:'acid',name:'산성 프리워시',prod:'Labocosmetica Purifica',vessel:'압축분무기',defaultVol:2000,
+   levels:[{label:'약(1:200)',ratio:200},{label:'중(1:150)',ratio:150},{label:'강(1:100)',ratio:100}],defaultLevel:0},
+  {id:'mitwash',stepId:'mitwash',name:'중성 카샴푸 미트세차',prod:'Labocosmetica Semper',vessel:'버킷',defaultVol:18000,
+   levels:[{label:'약(1:1200)',ratio:1200},{label:'중(1:1000)',ratio:1000},{label:'강(1:800)',ratio:800}],defaultLevel:1},
+  {id:'touchless',stepId:'touchless',name:'습식 발수코팅',prod:'워터에이징 익스트렉트 S',vessel:'압축분무기',defaultVol:2000,
+   levels:[{label:'일반(1:200)',ratio:200},{label:'퍼포먼스(1:100)',ratio:100}],defaultLevel:0},
+];
+var DIL_SETTINGS_KEY='washzone_dil_settings';
+function loadDilSettings(){
+  try{var r=localStorage.getItem(DIL_SETTINGS_KEY);if(r)return JSON.parse(r);}catch(e){}
+  var d={};DIL_PRODUCTS.forEach(function(p){d[p.id]={vol:p.defaultVol,levelIdx:p.defaultLevel,customRatio:null};});return d;
+}
+function saveDilSettings(){try{localStorage.setItem(DIL_SETTINGS_KEY,JSON.stringify(dilSettings));}catch(e){}}
+var dilSettings=loadDilSettings();
+
+function dilCalc(pid){
+  var p=DIL_PRODUCTS.filter(function(x){return x.id===pid;})[0];
+  var s=dilSettings[pid];
+  var ratio=s.customRatio!==null?s.customRatio:p.levels[s.levelIdx].ratio;
+  var total=s.vol;
+  var conc=Math.round(total/(ratio+1));
+  return {ratio:ratio,conc:conc,water:total-conc,total:total};
+}
+function dilAmtText(stepId){
+  var p=DIL_PRODUCTS.filter(function(x){return x.stepId===stepId;})[0];
+  if(!p)return null;
+  var d=dilCalc(p.id);
+  return '원액 '+d.conc+'ml + 물 '+d.water+'ml  (1:'+d.ratio+')';
+}
+
+/* ══ STATE ══ */
+var cfg={ph3:false,oil:false,glass:false,pekl:false,fin:'liquid'};
+var selP='basic';
+var bookH=0,bookM=0;
+var bookMin=0;
+var activeSteps=[];
+var cur=0,sessStart=null,stepStart=null,results={};
+var stepIv=null,globalIv=null,stepSec=0;
+var isPaused=false;
+var pauseStart=null,totalPaused=0;
+
+/* ══ HELPERS ══ */
+function pad(n){return String(n).padStart(2,'0');}
+function toHHMM(d){return pad(d.getHours())+':'+pad(d.getMinutes());}
+function toMMSS(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
+function toHM(m){var h=Math.floor(m/60),mn=m%60;return h?(h+'h '+mn+'m'):(mn+'m');}
+
+function buildSteps(){
+  return buildStepsFromCfg(cfg);
+}
+function sumEst(steps){return steps.reduce(function(a,s){return a+s.est;},0);}
+function sumEstWithOverride(steps,presetId){
+  return steps.reduce(function(a,s){return a+getStepEst(s.id,presetId);},0);
+}
+
+/* ══ 옵션 탭 코스 그리드 ══ */
+function renderPresets2(){
+  var g=document.getElementById('pgrid2');
+  if(!g) return;
+  g.innerHTML='';
+  getAllPresets().forEach(function(p){
+    var d=document.createElement('div');
+    d.className='pc'+(p.id===selP?' sel':'')+(p.empty?' custom-slot':'');
+    var chkSvg='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    d.innerHTML='<div class="pc-check">'+chkSvg+'</div>'
+      +'<div class="pc-top-row"><div class="pc-icon">'+p.icon+'</div><div class="pc-name">'+p.name+'</div></div>'
+      +(p.time?'<div class="pc-time">'+p.time+'</div>':'')
+      +'<div class="pc-rec">'+p.rec+'</div>';
+    d.addEventListener('click',function(){applyPreset(p.id);renderPresets2();});
+    g.appendChild(d);
+  });
+}
+
+/* ══ 설정 탭 전환 ══ */
+function switchSetupTab(tab){
+  ['course','option','dil'].forEach(function(t){
+    document.getElementById('stab-'+t).className='setup-tab'+(t===tab?' on':'');
+    document.getElementById('spane-'+t).className='setup-pane'+(t===tab?' on':'');
+  });
+  if(tab==='dil') renderDilGrid('dil-setup-grid', true);
+  if(tab==='option') renderPresets2();
+}
+
+/* ══ 예약 시간 스피너 ══ */
+function resetBook(){
+  bookH=0;bookM=0;bookMin=0;
+  updateBookDisplay();updatePreview();
+}
+function setBookH(h){
+  bookH=h;bookM=0;bookMin=h*60;
+  updateBookDisplay();updatePreview();
+}
+function adjBook30(dir){
+  bookMin+=dir*30;
+  if(bookMin<0)bookMin=0;
+  if(bookMin>23*60+30)bookMin=23*60+30;
+  bookH=Math.floor(bookMin/60);
+  bookM=bookMin%60;
+  updateBookDisplay();updatePreview();
+}
+function updateBookDisplay(){
+  var val=bookMin>0?(bookH+'h '+(bookM?pad(bookM)+'m':'')):'미설정';
+  var el=document.getElementById('bs-cur-val');
+  if(el) el.textContent=val;
+  var resetBtn=document.getElementById('bs-reset-btn');
+  if(resetBtn) resetBtn.className='bs-reset'+(bookMin===0?' active-reset':'');
+  document.querySelectorAll('.bs-chip').forEach(function(c){
+    c.classList.toggle('sel', parseInt(c.dataset.h)===bookH&&bookM===0);
+  });
+}
+
+/* ══ 프리셋 UI ══ */
+function renderPresets(){
+  var g=document.getElementById('pgrid');
+  g.innerHTML='';
+  var presets=getAllPresets();
+  presets.forEach(function(p,idx){
+    var d=document.createElement('div');
+    d.className='pc'+(p.id===selP?' sel':'')+(p.empty?' custom-slot':'');
+    var isCustom=p.id==='custom1'||p.id==='custom2';
+    var chkSvg='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    var upBtn=idx>0?'<div class="pc-ob" onclick="movePreset(\''+p.id+'\',-1,event)">↑</div>':'';
+    var dnBtn=idx<presets.length-1?'<div class="pc-ob" onclick="movePreset(\''+p.id+'\',1,event)">↓</div>':'';
+    d.innerHTML=
+      '<div class="pc-check">'+chkSvg+'</div>'
+      +'<div class="pc-top-row">'
+        +'<div class="pc-icon">'+p.icon+'</div>'
+        +'<div class="pc-name">'+p.name+'</div>'
+      +'</div>'
+      +(p.time?'<div class="pc-time">'+p.time+'</div>':'')
+      +'<div class="pc-flow" style="color:var(--tx2);">'+(p.flow||'탭하여 설정하기')+'</div>'
+      +(p.skip?'<div class="pc-skip">생략: '+p.skip+'</div>':'')
+      +'<div class="pc-rec" style="padding-bottom:'+(upBtn||dnBtn?'22px':'0')+'">'
+        +p.rec
+      +'</div>'
+      +(upBtn||dnBtn?'<div class="pc-order-btns">'+upBtn+dnBtn+'</div>':'')
+      +(isCustom?'<div class="pc-edit-btn" onclick="openCustomModal(\''+p.id+'\',event)">편집</div>':'');
+    d.addEventListener('click',function(){applyPreset(p.id);});
+    g.appendChild(d);
+  });
+}
+
+function movePreset(id,dir,e){
+  e.stopPropagation();
+  var presets=getAllPresets();
+  var ids=presets.map(function(p){return p.id;});
+  var i=ids.indexOf(id);
+  if(i<0)return;
+  var j=i+dir;
+  if(j<0||j>=ids.length)return;
+  var tmp=ids[i];ids[i]=ids[j];ids[j]=tmp;
+  saveOrder(ids);
+  renderPresets();
+}
+
+function applyPreset(id){
+  selP=id;
+  var p=getAllPresets().filter(function(x){return x.id===id;})[0];
+  if(!p||p.empty)return;
+  cfg={ph3:p.cfg.ph3,oil:p.cfg.oil,glass:p.cfg.glass,pekl:p.cfg.pekl,fin:p.cfg.fin,_presetId:id};
+  syncToggles();
+  renderPresets();
+  updatePreview();
+}
+
+function syncToggles(){
+  document.getElementById('t3ph').checked=cfg.ph3;
+  document.getElementById('toil').checked=cfg.oil;
+  document.getElementById('tglass').checked=cfg.glass;
+  document.getElementById('tpekl').checked=cfg.pekl;
+  document.querySelectorAll('.fb').forEach(function(b){b.classList.toggle('sel',b.dataset.v===cfg.fin);});
+}
+
+function onDet(){
+  cfg.ph3=document.getElementById('t3ph').checked;
+  cfg.oil=document.getElementById('toil').checked;
+  cfg.glass=document.getElementById('tglass').checked;
+  cfg.pekl=document.getElementById('tpekl').checked;
+  /* 옵션 변경 시 presetId 제거 — 자동 조합으로 전환 */
+  cfg._presetId=null;
+  selP=null;
+  document.querySelectorAll('.pc').forEach(function(c){c.classList.remove('sel');});
+  updatePreview();
+}
+
+function selFin(el){
+  document.querySelectorAll('.fb').forEach(function(b){b.classList.remove('sel');});
+  el.classList.add('sel');
+  cfg.fin=el.dataset.v;
+  /* 마감 변경 시 presetId 제거 — 자동 조합으로 전환 */
+  cfg._presetId=null;
+  selP=null;
+  document.querySelectorAll('.pc').forEach(function(c){c.classList.remove('sel');});
+  updatePreview();
+}
+
+function updatePreview(){
+  var steps=buildSteps();
+  var tot=sumEst(steps);
+  var info=document.getElementById('ctainfo');
+  var html='<span class="hi">'+steps.length+'단계</span>　';
+  if(bookMin>0){
+    var diff=bookMin-tot;
+    var cls=diff>=0?'ok':'warn';
+    html+='예약 '+toHM(bookMin)+'　예상 <span class="'+cls+'">'+toHM(tot)+'</span>　여유 <span class="'+cls+'">'+(diff>=0?'+':'')+toHM(Math.abs(diff))+'</span>';
+  } else {
+    html+='예상 <span class="neu">'+toHM(tot)+'</span>';
+  }
+  info.innerHTML=html;
+
+  /* 선택 코스 배너 업데이트 */
+  var p=selP?getAllPresets().filter(function(x){return x.id===selP;})[0]:null;
+  var banner=document.getElementById('selected-course-banner');
+  var lbl=document.getElementById('prev-lbl-title');
+  if(p&&!p.empty){
+    if(banner){banner.style.display='flex';document.getElementById('scb-icon').textContent=p.icon;document.getElementById('scb-name').textContent=p.name;document.getElementById('scb-time').textContent=p.time+' · '+p.rec;}
+    if(lbl) lbl.textContent='오늘 코스 미리보기 — '+p.icon+' '+p.name;
+  } else {
+    if(banner) banner.style.display='none';
+    if(lbl) lbl.textContent='오늘 코스 미리보기';
+  }
+
+  var list=document.getElementById('prevlist');
+  list.innerHTML='';
+  /* 활성 단계 ID 세트 */
+  var activeSet={};
+  steps.forEach(function(s){activeSet[s.id]=true;});
+  /* ALL 순서 그대로, 활성/비활성 표시 */
+  ALL.forEach(function(s){
+    var on=!!activeSet[s.id];
+    var d=document.createElement('div');
+    d.className='prev-item'+(on?'':' off');
+    d.innerHTML='<div class="prev-dot"></div><div class="prev-name">'+s.name+'</div><div class="prev-est">'+(on?s.est+'분':'—')+'</div>';
+    list.appendChild(d);
+  });
+
+  /* pgrid2 동기화 */
+  var pg2=document.getElementById('pgrid2');
+  if(pg2&&pg2.children.length===0) renderPresets2();
+}
+
+/* ══ 커스텀 코스 모달 ══ */
+var EMOJIS=['⭐','🎯','🔥','💪','🏆','🌟','✅','🚀','💫','🎨','🛠','🔧','🌈','🎪','🏅'];
+var editingCustomId=null;
+var cmMode='edit'; /* 'edit' | 'saveas' */
+var editingCustomId=null;
+
+function buildEmojiGrid(selectedIcon){
+  var eg=document.getElementById('cm-emoji-grid');
+  eg.innerHTML='';
+  EMOJIS.forEach(function(em){
+    var b=document.createElement('div');
+    b.className='cm-emoji-btn'+(em===selectedIcon?' sel':'');
+    b.textContent=em;
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.cm-emoji-btn').forEach(function(x){x.classList.remove('sel');});
+      b.classList.add('sel');
+    });
+    eg.appendChild(b);
+  });
+}
+
+/* ── 편집 모드: 코스 카드 편집 버튼 ── */
+function openCustomModal(id,e){
+  if(e) e.stopPropagation();
+  cmMode='edit';
+  editingCustomId=id;
+  var customs=loadCustomCourses();
+  var c=customs.filter(function(x){return x.id===id;})[0];
+  document.getElementById('cm-title').textContent='나만의 코스 편집';
+  document.getElementById('cm-slot-section').style.display='none';
+  document.getElementById('cm-opts-section').style.display='block';
+  document.getElementById('cm-save-btn').textContent='저장';
+  document.getElementById('cm-name').value=c.empty?'':c.name;
+  document.getElementById('cm-desc').value=c.empty?'':(c.rec||'');
+  document.getElementById('cm-3ph').checked=c.cfg.ph3;
+  document.getElementById('cm-oil').checked=c.cfg.oil;
+  document.getElementById('cm-glass').checked=c.cfg.glass;
+  document.getElementById('cm-pekl').checked=c.cfg.pekl;
+  document.querySelectorAll('.cm-fin-btn').forEach(function(b){b.classList.toggle('sel',b.dataset.v===c.cfg.fin);});
+  buildEmojiGrid(c.icon||'⭐');
+  document.getElementById('custom-modal').classList.add('show');
+}
+
+/* ── 저장 모드: 현재 설정을 나만의 코스로 저장 ── */
+function openSaveAsModal(){
+  cmMode='saveas';
+  editingCustomId=null;
+  document.getElementById('cm-title').textContent='현재 설정 저장';
+  document.getElementById('cm-opts-section').style.display='none';
+  document.getElementById('cm-save-btn').textContent='저장';
+
+  /* 현재 설정 요약 표시 */
+  var steps=buildSteps();
+  var tot=sumEst(steps);
+  var opts=[];
+  if(cfg.ph3) opts.push('3Ph 프리워시');
+  if(cfg.oil) opts.push('유막제거');
+  if(cfg.glass) opts.push('유리발수');
+  if(cfg.pekl) opts.push('페클');
+  var finLabel={'liquid':'물왁스','solid':'고체왁스','touchless':'습식발수','none':'왁스없음'};
+  opts.push('마감: '+(finLabel[cfg.fin]||cfg.fin));
+  document.getElementById('cm-cur-summary').innerHTML=
+    '<b>'+steps.length+'단계 · 약 '+toHM(tot)+'</b><br>'
+    +(opts.join(' · '));
+  document.getElementById('cm-slot-section').style.display='block';
+
+  /* 슬롯 버튼 */
+  var customs=loadCustomCourses();
+  var slotBtns=document.getElementById('cm-slot-btns');
+  slotBtns.innerHTML='';
+  customs.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.className='cm-slot-btn'+(c.empty?'':' has-data');
+    btn.innerHTML=(c.empty?'빈 슬롯':'<span>'+c.icon+'</span> '+c.name)+'<br><small>'+(c.empty?'새로 만들기':'덮어쓰기')+'</small>';
+    btn.addEventListener('click',function(){
+      editingCustomId=c.id;
+      /* 슬롯 선택 표시 */
+      document.querySelectorAll('.cm-slot-btn').forEach(function(b){b.style.borderColor='';b.style.background='';});
+      btn.style.borderColor='var(--acc)';btn.style.background='var(--acc2)';
+    });
+    slotBtns.appendChild(btn);
+  });
+
+  /* 이름/아이콘 초기값 */
+  var p=selP?getAllPresets().filter(function(x){return x.id===selP;})[0]:null;
+  document.getElementById('cm-name').value=p&&!p.empty?p.name+' 사본':'나만의 코스';
+  document.getElementById('cm-desc').value='';
+  buildEmojiGrid('⭐');
+  document.getElementById('custom-modal').classList.add('show');
+}
+
+function cmSelFin(el){
+  document.querySelectorAll('.cm-fin-btn').forEach(function(b){b.classList.remove('sel');});
+  el.classList.add('sel');
+}
+function closeCustomModal(){document.getElementById('custom-modal').classList.remove('show');}
+
+function saveCustomCourse(){
+  var name=document.getElementById('cm-name').value.trim()||'나만의 코스';
+  var desc=document.getElementById('cm-desc').value.trim();
+  var selEm=document.querySelector('.cm-emoji-btn.sel');
+  var icon=selEm?selEm.textContent:'⭐';
+
+  if(!editingCustomId){
+    alert('저장할 슬롯을 선택해주세요.');
+    return;
+  }
+
+  var newCfg;
+  if(cmMode==='saveas'){
+    /* 현재 cfg 그대로 저장 */
+    newCfg={ph3:cfg.ph3,oil:cfg.oil,glass:cfg.glass,pekl:cfg.pekl,fin:cfg.fin};
+  } else {
+    /* 편집 모드: 모달 옵션값 사용 */
+    var fin=document.querySelector('.cm-fin-btn.sel');
+    var finVal=fin?fin.dataset.v:'liquid';
+    newCfg={
+      ph3:document.getElementById('cm-3ph').checked,
+      oil:document.getElementById('cm-oil').checked,
+      glass:document.getElementById('cm-glass').checked,
+      pekl:document.getElementById('cm-pekl').checked,
+      fin:finVal
+    };
+  }
+
+  var steps=buildStepsFromCfg(newCfg);
+  var tot=sumEst(steps);
+  var customs=loadCustomCourses();
+  customs=customs.map(function(c){
+    if(c.id===editingCustomId){
+      return {
+        id:c.id, slot:c.slot, icon:icon, name:name,
+        time:'약 '+toHM(tot),
+        rec:desc||'나만의 설정',
+        flow:(function(){
+          /* 핵심 단계만: 고압수·폼헹굼 등 반복 단계 제외, 주요 단계만 추출 */
+          var skip={'prep':1,'rinse-foam':1,'rinse-acid':1,'rinse-mit':1,'final':1,'cleanup':1};
+          var coreSteps=steps.filter(function(s){return !skip[s.id];});
+          /* 단계가 많으면 앞뒤 핵심만 */
+          var names=coreSteps.map(function(s){
+            var short={'interior':'실내','wheel':'휠','pre1':'고압수',
+              'alkali':'알칼리','snowfoam':'스노우폼','acid':'산성',
+              'mitwash':'미트','oilfilm':'유막제거','pekl':'페클','dry':'드라잉',
+              'glass-coat':'유리발수','liquid-wax':'물왁스','solid-wax':'고체왁스',
+              'touchless':'습식발수','touchless-pre':'습식발수','tire':'타이어'};
+            return short[s.id]||s.name;
+          });
+          return names.join('→');
+        })(),
+        cfg:newCfg, empty:false
+      };
+    }
+    return c;
+  });
+  saveCustomCourses(customs);
+  closeCustomModal();
+  renderPresets();
+  /* 저장한 슬롯을 현재 코스로 선택 */
+  applyPreset(editingCustomId);
+}
+/* 코스 ID → 명시적 단계 순서 */
+var COURSE_STEPS={
+  'basic':   ['prep','interior','wheel','pre1','snowfoam','rinse-foam','mitwash','rinse-mit','dry','liquid-wax','tire','cleanup'],
+  'ph3':     ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','dry','liquid-wax','tire','cleanup'],
+  'quick':   ['prep','pre1','snowfoam','rinse-mit','dry','cleanup'],
+  'protect': ['prep','interior','wheel','pre1','snowfoam','rinse-foam','mitwash','rinse-mit','touchless-pre','dry','tire','cleanup'],
+  'gloss':   ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','pekl','final','dry','liquid-wax','tire','cleanup'],
+  'glass':   ['prep','interior','wheel','pre1','snowfoam','rinse-foam','mitwash','rinse-mit','oilfilm','final','dry','glass-coat','cleanup'],
+  'rainy':   ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','oilfilm','final','dry','glass-coat','liquid-wax','tire','cleanup'],
+  'winter':  ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','dry','liquid-wax','tire','cleanup'],
+  'wax':     ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','pekl','final','dry','solid-wax','tire','cleanup'],
+  'full':    ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','oilfilm','pekl','final','dry','glass-coat','solid-wax','tire','cleanup'],
+};
+
+/* 코스별 코어 단계 (드라잉·마감 이전) */
+var COURSE_CORE={
+  'basic':   ['prep','interior','wheel','pre1','snowfoam','rinse-foam','mitwash','rinse-mit'],
+  'ph3':     ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit'],
+  'quick':   ['prep','pre1','snowfoam','rinse-mit'],
+  'protect': ['prep','interior','wheel','pre1','snowfoam','rinse-foam','mitwash','rinse-mit'],
+  'gloss':   ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','pekl','final'],
+  'glass':   ['prep','interior','wheel','pre1','snowfoam','rinse-foam','mitwash','rinse-mit','oilfilm','final'],
+  'rainy':   ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','oilfilm','final'],
+  'winter':  ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit'],
+  'wax':     ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','pekl','final'],
+  'full':    ['prep','interior','wheel','pre1','alkali','snowfoam','rinse-foam','acid','rinse-acid','mitwash','rinse-mit','oilfilm','pekl','final'],
+};
+/* 드라잉 후 추가 단계 (유리발수코팅 등) */
+var COURSE_POST={
+  'glass':['glass-coat'],'rainy':['glass-coat'],'full':['glass-coat']
+};
+/* 타이어 포함 여부 */
+var COURSE_TIRE={
+  'basic':true,'ph3':true,'quick':false,'protect':true,'gloss':true,
+  'glass':false,'rainy':true,'winter':true,'wax':true,'full':true
+};
+
+function buildStepsFromCfg(c){
+  var presetId=c._presetId||null;
+  var idMap={};
+  ALL.forEach(function(s){idMap[s.id]=s;});
+  var ids;
+
+  if(presetId&&COURSE_CORE[presetId]){
+    /* ── 프리셋 기반: 코어 유지 + 마감만 fin에 따라 조합 ── */
+    var core=COURSE_CORE[presetId].slice();
+    var fin=c.fin;
+    /* quick은 마감 없음 고정 */
+    if(presetId==='quick'){
+      ids=core.concat(['dry','cleanup']);
+    } else {
+      if(fin==='touchless') core.push('touchless-pre');
+      core.push('dry');
+      var post=COURSE_POST[presetId]||[];
+      core=core.concat(post);
+      if(fin==='liquid') core.push('liquid-wax');
+      else if(fin==='solid') core.push('solid-wax');
+      if(COURSE_TIRE[presetId]&&fin!=='none') core.push('tire');
+      core.push('cleanup');
+      ids=core;
+    }
+  } else {
+    /* ── 수동 조합: 세부 옵션 기반 ── */
+    ids=['prep','interior','wheel','pre1'];
+    if(c.ph3) ids.push('alkali');
+    ids.push('snowfoam','rinse-foam');
+    if(c.ph3) ids.push('acid','rinse-acid');
+    ids.push('mitwash','rinse-mit');
+    if(c.oil) ids.push('oilfilm');
+    if(c.pekl) ids.push('pekl');
+    if(c.oil||c.pekl) ids.push('final');
+    if(c.fin==='touchless') ids.push('touchless-pre');
+    ids.push('dry');
+    if(c.glass) ids.push('glass-coat');
+    if(c.fin==='liquid') ids.push('liquid-wax');
+    else if(c.fin==='solid') ids.push('solid-wax');
+    if(c.fin!=='none') ids.push('tire');
+    ids.push('cleanup');
+  }
+
+  var n=1;
+  return ids.filter(function(id){return idMap[id];})
+    .map(function(id){return Object.assign({},idMap[id],{dn:n++});});
+}
+
+/* ══ 희석 계산기 렌더 ══ */
+function buildDilCard(p, container, refreshFn){
+  var s=dilSettings[p.id];
+  var d=dilCalc(p.id);
+  var curRatio=s.customRatio!==null?s.customRatio:p.levels[s.levelIdx].ratio;
+  var card=document.createElement('div');
+  card.className='dil-card';
+  var head=document.createElement('div');
+  head.className='dil-card-head';
+  head.innerHTML='<div class="dil-card-name">'+p.name+'</div><div class="dil-card-ratio">1:'+curRatio+'</div>';
+  card.appendChild(head);
+  var prodEl=document.createElement('div');
+  prodEl.className='dil-card-prod';
+  prodEl.textContent=p.prod+' · '+p.vessel;
+  card.appendChild(prodEl);
+  /* 프리셋 버튼 */
+  var preDiv=document.createElement('div');
+  preDiv.style.cssText='padding:0 14px 8px;';
+  var preLbl=document.createElement('div');preLbl.className='dil-ctrl-lbl';preLbl.textContent='오염도';
+  preDiv.appendChild(preLbl);
+  var grp=document.createElement('div');grp.className='dil-vessel-group';
+  p.levels.forEach(function(lv,li){
+    var btn=document.createElement('button');
+    btn.className='dil-vessel-btn'+(s.customRatio===null&&li===s.levelIdx?' sel':'');
+    btn.textContent=lv.label;
+    btn.addEventListener('click',function(){dilSettings[p.id].levelIdx=li;dilSettings[p.id].customRatio=null;saveDilSettings();refreshFn();});
+    grp.appendChild(btn);
+  });
+  preDiv.appendChild(grp);card.appendChild(preDiv);
+  /* 직접입력 + 용량 */
+  var ctrl=document.createElement('div');ctrl.className='dil-controls';
+  /* 희석비 직접입력 */
+  var cDiv=document.createElement('div');
+  var cLbl=document.createElement('div');cLbl.className='dil-ctrl-lbl';cLbl.textContent='직접입력 (1:N)';
+  cDiv.appendChild(cLbl);
+  var cWrap=document.createElement('div');cWrap.className='dil-vol-wrap';
+  var cPfx=document.createElement('span');cPfx.className='dil-vol-unit';cPfx.textContent='1:';
+  var cInp=document.createElement('input');
+  cInp.type='number';cInp.className='dil-vol-input';
+  cInp.placeholder=String(curRatio);
+  cInp.value=s.customRatio!==null?s.customRatio:'';
+  cInp.min=1;cInp.max=9999;cInp.step=1;
+  var cTimer=null;
+  cInp.addEventListener('input',function(){
+    clearTimeout(cTimer);
+    var inp=this;
+    cTimer=setTimeout(function(){
+      var v=parseInt(inp.value);
+      dilSettings[p.id].customRatio=isNaN(v)||v<1?null:v;
+      saveDilSettings();refreshFn();
+    },600);
+  });
+  cWrap.appendChild(cPfx);cWrap.appendChild(cInp);cDiv.appendChild(cWrap);ctrl.appendChild(cDiv);
+  /* 용량 입력 */
+  var vDiv=document.createElement('div');
+  var vLbl=document.createElement('div');vLbl.className='dil-ctrl-lbl';vLbl.textContent='총 용량';
+  vDiv.appendChild(vLbl);
+  var vWrap=document.createElement('div');vWrap.className='dil-vol-wrap';
+  var vInp=document.createElement('input');
+  vInp.type='number';vInp.className='dil-vol-input';vInp.value=s.vol;
+  vInp.min=50;vInp.max=30000;vInp.step=50;
+  var vTimer=null;
+  vInp.addEventListener('input',function(){
+    clearTimeout(vTimer);
+    var inp=this;
+    vTimer=setTimeout(function(){
+      var v=parseInt(inp.value);
+      if(!isNaN(v)&&v>=50){dilSettings[p.id].vol=v;saveDilSettings();refreshFn();}
+    },600);
+  });
+  var vUnit=document.createElement('span');vUnit.className='dil-vol-unit';vUnit.textContent='ml';
+  vWrap.appendChild(vInp);vWrap.appendChild(vUnit);vDiv.appendChild(vWrap);ctrl.appendChild(vDiv);
+  card.appendChild(ctrl);
+  /* 결과 */
+  var res=document.createElement('div');res.className='dil-result';
+  res.innerHTML='<div class="dil-res-item"><div class="dil-res-lbl">원액</div><div class="dil-res-val conc">'+d.conc+'ml</div></div>'
+    +'<div class="dil-res-item"><div class="dil-res-lbl">물</div><div class="dil-res-val water">'+d.water+'ml</div></div>'
+    +'<div class="dil-res-item"><div class="dil-res-lbl">합계</div><div class="dil-res-val total">'+d.total+'ml</div></div>';
+  card.appendChild(res);
+  container.appendChild(card);
+}
+
+function renderDilGrid(containerId, showAll){
+  var container=document.getElementById(containerId);
+  if(!container)return;
+  container.innerHTML='';
+  var activeIds={};
+  if(!showAll) activeSteps.forEach(function(s){activeIds[s.id]=true;});
+  DIL_PRODUCTS.forEach(function(p){
+    if(!showAll&&!activeIds[p.stepId])return;
+    buildDilCard(p,container,function(){renderDilGrid(containerId,showAll);});
+  });
+}
+
+/* ══ APP 탭 전환 ══ */
+function switchTab(tab){
+  ['prog','dil','info','log'].forEach(function(t){
+    document.getElementById('tab-'+t).className='app-tab'+(t===tab?' on':'');
+  });
+  document.getElementById('prog-view').style.display=tab==='prog'?'flex':'none';
+  document.getElementById('dil-main-panel').className='dil-main-panel'+(tab==='dil'?' on':'');
+  document.getElementById('info-panel').className=tab==='info'?'on':'';
+  document.getElementById('log-panel').className='app-panel'+(tab==='log'?' on':'');
+  if(tab==='dil') renderDilGrid('dil-app-grid',true);
+  if(tab==='info') renderInfoPanel();
+  if(tab==='log') renderLogPanel();
+}
+
+/* ══ WAKE LOCK ══ */
+var wakeLock=null;
+async function reqWakeLock(){
+  if(!('wakeLock' in navigator))return;
+  try{wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',function(){wakeLock=null;});}catch(e){}
+}
+function relWakeLock(){if(wakeLock){wakeLock.release();wakeLock=null;}}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'&&sessStart)reqWakeLock();});
+
+/* ══ 상태 저장/복원 ══ */
+var STATE_KEY='washzone_state';
+function saveState(){
+  if(!sessStart)return;
+  try{sessionStorage.setItem(STATE_KEY,JSON.stringify({sessStart:sessStart.getTime(),stepStart:stepStart.getTime(),cur:cur,results:results,cfg:cfg,selP:selP,bookMin:bookMin,dilSettings:dilSettings,stepSec:stepSec}));}catch(e){}
+}
+function clearState(){try{sessionStorage.removeItem(STATE_KEY);}catch(e){}}
+function restoreState(){
+  var raw;try{raw=sessionStorage.getItem(STATE_KEY);}catch(e){return false;}
+  if(!raw)return false;
+  try{
+    var s=JSON.parse(raw);
+    cfg=s.cfg||cfg;selP=s.selP||null;bookMin=s.bookMin||0;
+    if(s.dilSettings)dilSettings=s.dilSettings;
+    syncToggles();
+    activeSteps=buildSteps();
+    cur=s.cur||0;results=s.results||{};
+    sessStart=new Date(s.sessStart);stepStart=new Date(s.stepStart);stepSec=s.stepSec||0;isPaused=false;totalPaused=0;
+    return true;
+  }catch(e){clearState();return false;}
+}
+
+/* ══ START ══ */
+function startApp(){
+  clearState();
+  activeSteps=buildSteps();
+  cur=0;results={};
+  sessStart=new Date();stepStart=new Date();
+  document.getElementById('setup').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('ah-row2').style.display='flex';
+  if(bookMin>0)document.getElementById('bbar').classList.add('on');
+  renderSteps();updateProg();
+  startStepTimer();
+  reqWakeLock();
+  globalIv=setInterval(function(){tickGlobal();saveState();},1000);tickGlobal();
+  scrollToCur();
+}
+
+function goSetup(){
+  if(!confirm('설정 화면으로 돌아가면 현재 기록이 초기화됩니다. 계속할까요?'))return;
+  clearInterval(globalIv);clearInterval(stepIv);
+  relWakeLock();clearState();sessStart=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('setup').style.display='flex';
+}
+
+function startStepTimer(){
+  clearInterval(stepIv);stepSec=0;totalPaused=0;
+  stepIv=setInterval(function(){
+    if(isPaused) return;
+    stepSec++;
+    var el=document.getElementById('active-tmr');
+    if(el)el.textContent=toMMSS(stepSec);
+  },1000);
+}
+
+function togglePause(){
+  isPaused=!isPaused;
+  var banner=document.getElementById('paused-banner');
+  banner.className='paused-banner'+(isPaused?' on':'');
+  if(isPaused){
+    pauseStart=new Date();
+  } else {
+    if(pauseStart) totalPaused+=(new Date()-pauseStart);
+    pauseStart=null;
+    tickGlobal();
+  }
+  /* 버튼 아이콘 업데이트 */
+  var btns=document.querySelectorAll('.btn-pause-s');
+  btns.forEach(function(b){
+    b.className='btn-pause-s'+(isPaused?' paused':'');
+    b.innerHTML=isPaused
+      ?'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> 재개'
+      :'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> 일시정지';
+  });
+}
+
+function tickGlobal(){
+  if(isPaused) return;
+  var now=new Date();
+  var elSec=Math.floor((now-sessStart)/1000)-Math.floor(totalPaused/1000);
+  document.getElementById('hdclock').textContent=toHHMM(now);
+  document.getElementById('bsnow').textContent=toHHMM(now);
+
+  /* 하단: 이 단계 경과 */
+  var stepEl=Math.floor((now-stepStart)/1000)-Math.floor(totalPaused/1000);
+  var curStep=activeSteps[cur];
+  if(curStep){
+    var stepEst=curStep.est;
+    var stepElMin=Math.round(stepEl/60);
+    var stepDiff=stepElMin-stepEst;
+    var stepTxt=toMMSS(Math.max(0,stepEl))+(stepDiff>0?' (+'+stepDiff+'분)':stepDiff<0?' ('+stepDiff+'분)':'');
+    document.getElementById('bsel').textContent=stepTxt;
+  }
+
+  /* 남은 시간 */
+  var doneCnt=Object.keys(results).length;
+  var remMin=activeSteps.slice(doneCnt).reduce(function(a,s){return a+s.est;},0);
+  var projDate=new Date(now.getTime()+remMin*60000);
+  var projStr=toHHMM(projDate);
+  document.getElementById('bsproj').textContent=projStr;
+
+  /* 총 예상 소요 */
+  var totalEst=sumEst(activeSteps);
+
+  /* 헤더 2행 업데이트 */
+  document.getElementById('ah-elapsed').textContent=toMMSS(elSec);
+  var remSec=Math.max(0,remMin*60);
+  document.getElementById('ah-remain').textContent=toHM(Math.round(remSec/60));
+  document.getElementById('ah-total-est').textContent=toHM(totalEst);
+
+  var bookEl=document.getElementById('ah-book');
+  if(bookMin>0){
+    bookEl.textContent=toHM(bookMin);
+    var projMin=Math.round((projDate-sessStart)/60000);
+    var cls=projMin<=bookMin?'ok':(projMin<=bookMin+15?'tight':'over');
+    document.getElementById('ah-remain').className='ah-stat-val '+cls;
+    /* bbar */
+    var usedMin=Math.round(elSec/60);
+    var remBook=bookMin-usedMin;
+    document.getElementById('bslots').innerHTML='예약 '+toHM(bookMin)+'<span class="sep">·</span>경과 '+toHM(usedMin)+'<span class="sep">·</span>잔여 <span class="'+cls+'">'+(remBook>=0?'+':'')+toHM(Math.abs(remBook))+'</span>';
+    var pe=document.getElementById('bproj');pe.textContent=projStr;pe.className='bbar-proj-val '+cls;
+    document.getElementById('bsproj').className='bi-v '+cls;
+  } else {
+    bookEl.textContent='미설정';
+  }
+}
+
+/* 이벤트 위임 */
+document.getElementById('scroll').addEventListener('click',function(e){
+  if(e.target.closest('.btn-done-s'))completeStep();
+  else if(e.target.closest('.btn-skip-s'))skipStep();
+  else if(e.target.closest('.btn-undo-s'))undoStep();
+  else if(e.target.closest('.btn-pause-s'))togglePause();
+});
+
+function completeStep(){
+  if(isPaused)togglePause();
+  if(cur>=activeSteps.length)return;
+  var now=new Date();
+  var effectiveSec=Math.floor((now-stepStart)/1000)-Math.floor(totalPaused/1000);
+  var sec=Math.max(0,effectiveSec);
+  var min=Math.max(1,Math.round(sec/60));
+  results[cur]={doneStr:toHHMM(now),min:min};
+  cur++;stepStart=new Date();
+  if(cur>=activeSteps.length){clearInterval(stepIv);renderSteps();updateProg();showDone();return;}
+  renderSteps();updateProg();startStepTimer();scrollToCur();
+}
+function skipStep(){
+  if(cur>=activeSteps.length)return;
+  results[cur]={skipped:true};
+  cur++;stepStart=new Date();
+  if(cur>=activeSteps.length){clearInterval(stepIv);renderSteps();updateProg();showDone();return;}
+  renderSteps();updateProg();startStepTimer();scrollToCur();
+}
+function undoStep(){
+  if(cur===0)return;
+  cur--;delete results[cur];
+  stepStart=new Date();
+  renderSteps();updateProg();startStepTimer();scrollToCur();
+}
+function scrollToCur(){setTimeout(function(){var el=document.getElementById('sc-'+cur);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
+function updateProg(){
+  var done=Object.keys(results).length,tot=activeSteps.length;
+  var pct=Math.round(done/tot*100);
+  document.getElementById('barf').style.width=pct+'%';
+  document.getElementById('pblbl').textContent=done+' / '+tot+' 단계 완료';
+  document.getElementById('pbpct').textContent=pct+'%';
+  document.getElementById('bsdone').textContent=done+'/'+tot;
+}
+
+function makeEl(tag,cls,html){var el=document.createElement(tag);if(cls)el.className=cls;if(html!==undefined)el.innerHTML=html;return el;}
+
+function renderSteps(){
+  var container=document.getElementById('scroll');
+  container.innerHTML='';
+  activeSteps.forEach(function(s,i){
+    var res=results[i];
+    var state=res?(res.skipped?'skipped':'done'):(i===cur?'active':(i===cur+1?'next':'pending'));
+    var doneT='',actT='',deltaT='',deltaC='';
+    if(res&&!res.skipped){
+      doneT=res.doneStr;actT=res.min+'분';
+      var d=res.min-s.est;
+      deltaT=d<=0?('▲ '+Math.abs(d)+'분 빠름'):('▼ '+d+'분 초과');
+      deltaC=d<=0?'fast':'slow';
+    }
+    var ptH=(s.pts||[]).map(function(p){return '<span class="pt">'+p+'</span>';}).join('');
+    var showD=state==='active'||state==='done'||state==='next';
+    var calcAmt=dilAmtText(s.id);
+
+    var card=makeEl('div','sc '+state,'');
+    card.id='sc-'+i;
+
+    var ct=makeEl('div','ct','');
+    var nb=makeEl('div','nb',pad(s.dn));
+    var cm=makeEl('div','cm','');
+    var ctname=makeEl('div','ct-name',s.name);
+    var ctprod=makeEl('div','ct-prod',s.prod);
+    cm.appendChild(ctname);cm.appendChild(ctprod);
+    var cr=makeEl('div','cr','');
+    cr.appendChild(makeEl('div','next-badge','NEXT'));
+    cr.appendChild(makeEl('div','est-b','예상 '+s.est+'분'));
+    var tmr=makeEl('div','step-tmr',state==='active'?toMMSS(stepSec):'00:00');
+    if(state==='active')tmr.id='active-tmr';
+    cr.appendChild(tmr);
+    cr.appendChild(makeEl('div','done-b',doneT));
+    cr.appendChild(makeEl('div','chk','<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'));
+    cr.appendChild(makeEl('div','skip-lbl','SKIP'));
+    ct.appendChild(nb);ct.appendChild(cm);ct.appendChild(cr);
+    card.appendChild(ct);
+
+    if(showD){
+      var cd=makeEl('div','cd','');
+      if(calcAmt){
+        var dilProd=DIL_PRODUCTS.filter(function(x){return x.stepId===s.id;})[0];
+        var ratio=dilProd?'1:'+(dilSettings[dilProd.id].customRatio!==null?dilSettings[dilProd.id].customRatio:dilProd.levels[dilSettings[dilProd.id].levelIdx].ratio):'';
+        var drD=makeEl('div','dr','');drD.appendChild(makeEl('div','dl','희석비'));
+        var dvD=makeEl('div','dv','');dvD.innerHTML='<span class="dil">'+ratio+'</span>';drD.appendChild(dvD);cd.appendChild(drD);
+        var drA=makeEl('div','dr','');drA.appendChild(makeEl('div','dl','사용량'));
+        var dvA=makeEl('div','dv','');dvA.innerHTML='<b>'+calcAmt+'</b>';drA.appendChild(dvA);cd.appendChild(drA);
+      } else {
+        if(s.dil){var dr=makeEl('div','dr','');dr.appendChild(makeEl('div','dl','희석비'));var dv=makeEl('div','dv','');dv.innerHTML='<span class="dil">'+s.dil+'</span>';dr.appendChild(dv);cd.appendChild(dr);}
+        if(s.amt){var dr2=makeEl('div','dr','');dr2.appendChild(makeEl('div','dl','사용량'));var dv2=makeEl('div','dv','');dv2.innerHTML='<b>'+s.amt+'</b>';dr2.appendChild(dv2);cd.appendChild(dr2);}
+      }
+      if(s.pts&&s.pts.length){var dr3=makeEl('div','dr pts-row','');dr3.appendChild(makeEl('div','dl','포인트'));var dv3=makeEl('div','dv','');dv3.innerHTML=ptH;dr3.appendChild(dv3);cd.appendChild(dr3);}
+      if(res&&!res.skipped){var ar=makeEl('div','ar','');ar.appendChild(makeEl('div','ar-l','실소요'));ar.appendChild(makeEl('div','ar-v',actT));ar.appendChild(makeEl('div','ar-d '+deltaC,deltaT));cd.appendChild(ar);}
+      card.appendChild(cd);
+    }
+
+    var acrow=makeEl('div','acrow','');
+    var bUndo=makeEl('button','btn-undo-s','');
+    bUndo.title='이전';
+    bUndo.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>';
+    var bSkip=makeEl('button','btn-skip-s','');
+    bSkip.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 4 15 12 5 20"/><line x1="19" y1="5" x2="19" y2="19"/></svg> 스킵';
+    var bPause=makeEl('button','btn-pause-s','');
+    bPause.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> 일시정지';
+    var bDone=makeEl('button','btn-done-s','');
+    bDone.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 완료';
+    acrow.appendChild(bUndo);acrow.appendChild(bSkip);acrow.appendChild(bPause);acrow.appendChild(bDone);
+    card.appendChild(acrow);
+    container.appendChild(card);
+  });
+}
+
+/* ══ 코스 정보 패널 ══ */
+function renderInfoPanel(){
+  var pEl=document.getElementById('ip-preset');
+  var p=selP?getAllPresets().filter(function(x){return x.id===selP;})[0]:null;
+  if(p&&!p.empty){
+    pEl.innerHTML='<div class="ip-preset-icon">'+p.icon+'</div><div class="ip-preset-body"><div class="ip-preset-name">'+p.name+'</div><div class="ip-preset-time">'+p.time+'</div><div class="ip-preset-flow">'+p.flow+'</div>'+(p.skip?'<div style="font-size:11px;color:var(--tx3);font-family:var(--mono);margin-top:4px;">생략: '+p.skip+'</div>':'')+'<div class="ip-preset-rec">'+p.rec+'</div></div>';
+  } else {
+    pEl.innerHTML='<div class="ip-preset-body"><div class="ip-preset-name" style="color:var(--tx2)">커스텀 코스</div><div class="ip-preset-flow">'+activeSteps.map(function(s){return s.name;}).join(' → ')+'</div></div>';
+  }
+  var opts=[
+    {name:'3Ph 프리워시',on:cfg.ph3},{name:'유리 유막 제거',on:cfg.oil},
+    {name:'유리 발수 코팅',on:cfg.glass&&cfg.fin!=='touchless'},{name:'페인트 클렌징',on:cfg.pekl},
+    {name:'고체왁스',on:cfg.fin==='solid'},{name:'물왁스',on:cfg.fin==='liquid'},
+    {name:'습식 발수코팅',on:cfg.fin==='touchless'},{name:'예약 '+toHM(bookMin),on:bookMin>0},
+  ];
+  document.getElementById('ip-opts').innerHTML=opts.map(function(o){
+    return '<div class="ip-opt'+(o.on?'':' inactive')+'"><div class="ip-opt-dot '+(o.on?'on':'off')+'"></div><div class="ip-opt-name">'+o.name+'</div><div class="ip-opt-badge '+(o.on?'on':'off')+'">'+(o.on?'ON':'—')+'</div></div>';
+  }).join('');
+  renderDilGrid('dil-info-grid',false);
+  var sEl=document.getElementById('ip-steps');
+  sEl.innerHTML=activeSteps.map(function(s,i){
+    var res=results[i];
+    var isDone=res&&!res.skipped,isSkip=res&&res.skipped,isCur=i===cur&&!res;
+    var cls='ip-step'+(isDone?' done-s':isSkip?' done-s':isCur?' cur-s':'');
+    var dilTxt=dilAmtText(s.id);
+    return '<div class="'+cls+'"><div class="ip-step-n">'+pad(s.dn)+'</div><div class="ip-step-name">'+s.name+(dilTxt?'<div class="ip-step-dil-calc">'+dilTxt+'</div>':'')+'</div><div class="ip-step-est">'+(isDone?res.doneStr:isSkip?'SKIP':s.est+'분')+'</div><div class="ip-step-chk"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>';
+  }).join('');
+}
+
+/* ══ 기록 ══ */
+var HISTORY_KEY='washzone_history';
+function saveHistory(){
+  var totalSec=Math.floor((new Date()-sessStart)/1000);
+  var totalMin=Math.round(totalSec/60);
+  var p=selP?getAllPresets().filter(function(x){return x.id===selP;})[0]:null;
+  var record={id:sessStart.getTime(),date:sessStart.toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}),startTime:toHHMM(sessStart),endTime:toHHMM(new Date()),courseName:p?p.name:'커스텀 코스',courseIcon:p?p.icon:'🚗',totalMin:totalMin,estMin:sumEst(activeSteps),bookMin:bookMin,steps:activeSteps.map(function(s,i){var r=results[i];return {name:s.name,est:s.est,skipped:r&&r.skipped?true:false,actual:r&&!r.skipped?r.min:null,doneStr:r&&!r.skipped?r.doneStr:null};})};
+  var history=loadHistory();history.unshift(record);if(history.length>50)history=history.slice(0,50);
+  try{localStorage.setItem(HISTORY_KEY,JSON.stringify(history));}catch(e){}
+}
+function loadHistory(){try{var r=localStorage.getItem(HISTORY_KEY);return r?JSON.parse(r):[];}catch(e){return [];}}
+function deleteHistory(id){var h=loadHistory().filter(function(r){return r.id!==id;});try{localStorage.setItem(HISTORY_KEY,JSON.stringify(h));}catch(e){}renderLogPanel();}
+function clearAllHistory(){if(!confirm('모든 세차 기록을 삭제할까요?'))return;try{localStorage.removeItem(HISTORY_KEY);}catch(e){}renderLogPanel();}
+function gotoLog(){document.getElementById('done-ov').classList.remove('show');switchTab('log');}
+
+function renderLogPanel(){
+  var panel=document.getElementById('log-panel');
+  panel.innerHTML='';
+  var history=loadHistory();
+  if(history.length===0){
+    panel.innerHTML='<div class="log-empty"><div class="log-empty-icon">🚗</div><div class="log-empty-txt">아직 기록이 없어요</div><div style="font-size:12px;color:var(--tx3)">세차 완료 후 자동 저장돼요</div></div>';return;
+  }
+  var toolbar=document.createElement('div');toolbar.className='log-toolbar';
+  toolbar.innerHTML='<div class="log-count">총 '+history.length+'회</div><button class="log-clear-all" onclick="clearAllHistory()">전체 삭제</button>';
+  panel.appendChild(toolbar);
+  history.forEach(function(rec){
+    var entry=document.createElement('div');entry.className='log-entry';entry.id='log-entry-'+rec.id;
+    var diff=rec.totalMin-rec.estMin;
+    var diffTxt=diff<=0?('⚡ '+Math.abs(diff)+'분 단축'):('+'+diff+'분');
+    var diffCls=diff<=0?'good':'bad';
+    var comp=rec.steps.filter(function(s){return !s.skipped&&s.actual!==null;}).length;
+    var skip=rec.steps.filter(function(s){return s.skipped;}).length;
+    var fast=rec.steps.filter(function(s){return !s.skipped&&s.actual!==null&&s.actual<=s.est;}).length;
+    entry.innerHTML='<div class="log-head"><div class="log-date">'+rec.date+' '+rec.startTime+'</div><div class="log-course">'+rec.courseIcon+' '+rec.courseName+'</div><div class="log-duration">'+toHM(rec.totalMin)+'</div><div class="log-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>'
+      +'<div class="log-summary"><div class="log-sum-item"><div class="log-sum-lbl">총 소요</div><div class="log-sum-val">'+toHM(rec.totalMin)+'</div></div><div class="log-sum-item"><div class="log-sum-lbl">예상 대비</div><div class="log-sum-val '+diffCls+'">'+diffTxt+'</div></div><div class="log-sum-item"><div class="log-sum-lbl">예정 내</div><div class="log-sum-val">'+fast+'/'+comp+'</div></div>'+(skip?'<div class="log-sum-item"><div class="log-sum-lbl">스킵</div><div class="log-sum-val">'+skip+'단계</div></div>':'')+(rec.bookMin>0?'<div class="log-sum-item"><div class="log-sum-lbl">예약 대비</div><div class="log-sum-val '+(rec.totalMin<=rec.bookMin?'good':'bad')+'">'+(rec.totalMin<=rec.bookMin?'✓ 여유':'+'+(rec.totalMin-rec.bookMin)+'분')+'</div></div>':'')+'</div>'
+      +'<div class="log-steps">'+rec.steps.map(function(s,i){var delta='',deltaC='';if(!s.skipped&&s.actual!==null){var d=s.actual-s.est;delta=d<=0?('▲'+Math.abs(d)+'분'):('▼'+d+'분');deltaC=d<=0?'fast':'slow';}return '<div class="log-step-row'+(s.skipped?' skipped':'')+'"><div class="log-step-n">'+(i+1)+'</div><div class="log-step-name">'+s.name+'</div><div class="log-step-actual">'+(s.skipped?'SKIP':s.actual?s.actual+'분':'—')+'</div><div class="log-step-delta '+deltaC+'">'+delta+'</div></div>';}).join('')
+      +'<div class="log-del-btn" onclick="deleteHistory('+rec.id+')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg> 이 기록 삭제</div></div>';
+    entry.querySelector('.log-head').addEventListener('click',function(){entry.classList.toggle('open');});
+    panel.appendChild(entry);
+  });
+}
+
+/* ══ DONE ══ */
+/* ── 5분 단위 올림 ── */
+function ceil5(min){ return Math.ceil(min/5)*5; }
+
+/* ── 코스별 단계 시간 오버라이드 저장소 ── */
+var STEP_TIMES_KEY='washzone_step_times';
+function loadStepTimes(){
+  try{var r=localStorage.getItem(STEP_TIMES_KEY);if(r)return JSON.parse(r);}catch(e){}
+  return {};
+}
+function saveStepTimesData(data){
+  try{localStorage.setItem(STEP_TIMES_KEY,JSON.stringify(data));}catch(e){}
+}
+/* 단계 예상 시간 조회 — 오버라이드 우선 */
+function getStepEst(stepId, presetId){
+  if(presetId){
+    var times=loadStepTimes();
+    if(times[presetId]&&times[presetId][stepId]!==undefined)
+      return times[presetId][stepId];
+  }
+  var s=ALL.filter(function(x){return x.id===stepId;})[0];
+  return s?s.est:0;
+}
+
+/* 완료 화면에서 쓸 pending 업데이트 데이터 */
+var pendingTimeUpdate=null;
+
+function showDone(){
+  var totalSec=Math.floor((new Date()-sessStart)/1000);
+  var totalMin=Math.round(totalSec/60);
+  var tot=sumEst(activeSteps);
+  var comp=Object.values(results).filter(function(r){return !r.skipped;}).length;
+  var skip=Object.values(results).filter(function(r){return r.skipped;}).length;
+  var fast=activeSteps.filter(function(_,i){return results[i]&&!results[i].skipped&&results[i].min<=activeSteps[i].est;}).length;
+  var diff=totalMin<=tot?('⚡ '+(tot-totalMin)+'분 단축'):('+' +(totalMin-tot)+'분');
+  saveHistory();clearState();
+  document.getElementById('donesub').textContent=toHHMM(new Date())+' 종료 · 수고하셨습니다 🎉';
+  var h='<div class="dstat"><div class="ds-l">총 소요</div><div class="ds-v">'+toHM(totalMin)+'</div></div>'
+    +'<div class="dstat"><div class="ds-l">예상 대비</div><div class="ds-v">'+diff+'</div></div>'
+    +'<div class="dstat"><div class="ds-l">예정 내</div><div class="ds-v">'+fast+'/'+comp+'</div></div>';
+  if(skip)h+='<div class="dstat"><div class="ds-l">스킵</div><div class="ds-v">'+skip+'단계</div></div>';
+  if(bookMin>0)h+='<div class="dstat"><div class="ds-l">예약 대비</div><div class="ds-v">'+(totalMin<=bookMin?'✓ 여유':'초과 '+(totalMin-bookMin)+'분')+'</div></div>';
+  h+='<div class="dstat" style="cursor:pointer;border-color:var(--acc);" onclick="gotoLog()"><div class="ds-l">기록 보기</div><div class="ds-v" style="font-size:14px">→</div></div>';
+  document.getElementById('donestats').innerHTML=h;
+
+  /* ── 단계 시간 업데이트 UI ── */
+  var updateBox=document.getElementById('done-update-box');
+  updateBox.style.display='none';
+  pendingTimeUpdate=null;
+
+  /* 실제 소요 기록이 있는 완료 단계만 */
+  var updatable=activeSteps.filter(function(s,i){
+    return results[i]&&!results[i].skipped&&results[i].min>0;
+  });
+  if(updatable.length>0){
+    /* 5분 올림 적용 후 현재 예상 시간과 비교 */
+    var presetId=selP||null;
+    var changes=updatable.map(function(s,idx){
+      var i=activeSteps.indexOf(s);
+      var actual=results[i].min;
+      var rounded=ceil5(actual);           /* 5분 올림 */
+      var current=getStepEst(s.id,presetId);
+      return {id:s.id,name:s.name,actual:actual,rounded:rounded,current:current};
+    }).filter(function(c){return c.rounded!==c.current;}); /* 변경 있는 것만 */
+
+    if(changes.length>0){
+      pendingTimeUpdate={presetId:presetId,changes:changes};
+      var newTot=activeSteps.reduce(function(sum,s,i){
+        var ch=changes.filter(function(c){return c.id===s.id;})[0];
+        return sum+(ch?ch.rounded:getStepEst(s.id,presetId));
+      },0);
+      document.getElementById('done-update-sub').textContent=
+        '실제 기록을 5분 단위로 올림해서 저장해요. 업데이트 후 예상 총 시간: 약 '+toHM(newTot);
+      /* 단계별 목록 */
+      var list=document.getElementById('done-step-list');
+      list.innerHTML='';
+      changes.forEach(function(c){
+        var cls=c.rounded<c.current?'faster':c.rounded>c.current?'slower':'same';
+        var arrow=c.rounded<c.current?'↓':c.rounded>c.current?'↑':'=';
+        var row=document.createElement('div');
+        row.className='done-step-row';
+        row.innerHTML='<div class="done-step-name">'+c.name+'</div>'
+          +'<div class="done-step-old">'+c.current+'분</div>'
+          +'<div class="done-step-arrow">'+arrow+'</div>'
+          +'<div class="done-step-new '+cls+'">'+c.rounded+'분</div>'
+          +'<div style="font-size:10px;color:var(--tx3);font-family:var(--mono)">(실제 '+c.actual+'분)</div>';
+        list.appendChild(row);
+      });
+      updateBox.style.display='flex';
+    }
+  }
+
+  document.getElementById('done-ov').classList.add('show');
+}
+
+function applyTimeUpdate(){
+  if(!pendingTimeUpdate) return;
+  var pid=pendingTimeUpdate.presetId;
+  var changes=pendingTimeUpdate.changes;
+
+  if(pid&&(pid==='custom1'||pid==='custom2')){
+    /* 나만의 코스: cfg 내부 시간 저장 불가 → 공통 오버라이드에 저장 */
+  }
+  /* 공통: STEP_TIMES_KEY에 presetId별 단계 시간 저장 */
+  var times=loadStepTimes();
+  if(!times[pid||'_custom']) times[pid||'_custom']={};
+  var target=pid?pid:'_custom';
+  if(!times[target]) times[target]={};
+  changes.forEach(function(c){ times[target][c.id]=c.rounded; });
+  saveStepTimesData(times);
+
+  /* 코스 카드 시간 표시 업데이트 */
+  if(pid){
+    var allPresets=getAllPresets();
+    var p=allPresets.filter(function(x){return x.id===pid;})[0];
+    if(p){
+      if(pid==='custom1'||pid==='custom2'){
+        /* 나만의 코스: localStorage 업데이트 */
+        var customs=loadCustomCourses();
+        customs=customs.map(function(c){
+          if(c.id!==pid) return c;
+          /* 새 총 시간 계산 */
+          var steps=buildStepsFromCfg(c.cfg);
+          var newTot=steps.reduce(function(sum,s){
+            var ch=changes.filter(function(ch){return ch.id===s.id;})[0];
+            return sum+(ch?ch.rounded:getStepEst(s.id,pid));
+          },0);
+          return Object.assign({},c,{time:'약 '+toHM(newTot)});
+        });
+        saveCustomCourses(customs);
+        renderPresets();
+      } else {
+        /* 기본 코스: 카드 시간은 DEFAULT_PRESETS에 직접 쓸 수 없으니
+           다음 미리보기 계산 시 getStepEst가 오버라이드 값 반영 */
+      }
+    }
+  }
+
+  document.getElementById('done-update-box').style.display='none';
+  pendingTimeUpdate=null;
+
+  /* 완료 토스트 */
+  var toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%);'
+    +'background:var(--acc);color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;'
+    +'padding:10px 20px;border-radius:20px;z-index:600;box-shadow:0 4px 16px rgba(0,0,0,.15);';
+  toast.textContent='✓ 예상 시간이 업데이트되었어요';
+  document.body.appendChild(toast);
+  setTimeout(function(){toast.remove();},2500);
+}
+
+/* ══ INIT ══ */
+setInterval(function(){if(!sessStart){var c=document.getElementById('hdclock');if(c)c.textContent=toHHMM(new Date());}},1000);
+/* 코스 ID가 변경되었으므로 저장된 순서 초기화 */
+(function(){
+  var validIds=DEFAULT_PRESETS.map(function(p){return p.id;});
+  var order=loadOrder();
+  if(order){
+    var hasOld=order.some(function(id){return validIds.indexOf(id)<0;});
+    if(hasOld) localStorage.removeItem(ORDER_KEY);
+  }
+})();
+renderPresets();
+renderDilGrid('dil-setup-grid',true);
+applyPreset('basic');
+renderDilGrid('dil-setup-grid',true);
+
+(function(){
+  if(restoreState()){
+    document.getElementById('setup').style.display='none';
+    document.getElementById('app').style.display='flex';
+    if(bookMin>0)document.getElementById('bbar').classList.add('on');
+    renderSteps();updateProg();
+    clearInterval(stepIv);
+    stepIv=setInterval(function(){stepSec++;var el=document.getElementById('active-tmr');if(el)el.textContent=toMMSS(stepSec);},1000);
+    reqWakeLock();
+    globalIv=setInterval(function(){tickGlobal();saveState();},1000);tickGlobal();
+    scrollToCur();
+    var banner=document.createElement('div');
+    banner.style.cssText='position:fixed;top:60px;left:50%;transform:translateX(-50%);background:var(--s1);border:1.5px solid var(--acc);color:var(--acc);font-family:var(--sans);font-size:13px;font-weight:500;padding:10px 20px;border-radius:20px;z-index:500;box-shadow:0 4px 16px rgba(0,0,0,.1);';
+    banner.textContent='이전 세차 세션을 복원했어요 ✓';
+    document.body.appendChild(banner);
+    setTimeout(function(){banner.remove();},3000);
+  }
+})();
+
+</script>
+</body>
+</html>
